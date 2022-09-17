@@ -15,6 +15,43 @@
  */
 class Solution {
     
+    // 1) Check for each node if it's a valid bst. Also return it's sum. 
+    // Complexity: O(n^2)
+//     private int maxSum = 0;
+    
+//     public int maxSumBST(TreeNode root) {
+//         preordeHelper(root);
+//         return maxSum;
+//     }
+    
+//     private void preordeHelper(TreeNode root) {
+//         if(root==null)
+//             return;
+        
+//         Integer validBstSum = validBstSum(root, null, null);
+//         if(validBstSum!=null && validBstSum>maxSum)
+//             maxSum = validBstSum;
+        
+//         preordeHelper(root.left);
+//         preordeHelper(root.right);
+//     }
+    
+//     private Integer validBstSum(TreeNode root, Integer lower, Integer upper) {
+//         if(root==null)
+//             return 0;
+        
+//         Integer left = validBstSum(root.left, lower, root.val);
+//         Integer right = validBstSum(root.right, root.val, upper);
+        
+//         if(left!=null && right!=null 
+//            && (lower==null || lower<root.val)
+//            && (upper==null || root.val<upper))
+//             return left+right+root.val;
+        
+//         return null;
+//     }
+    
+    
     // 2.1) Use upper bound and lower bounds. Bottom up approach instead of top down.
     // Refer 2.2 for better understanding.
     private int maxSum = 0;
