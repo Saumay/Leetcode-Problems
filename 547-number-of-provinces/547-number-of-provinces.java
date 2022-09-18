@@ -104,30 +104,67 @@ class Solution {
     
     
     // 3) Using Adjacency Matrix + DFS
+//     public int findCircleNum(int[][] isConnected) {
+//         int n = isConnected.length;
+//         int provinces = 0;
+//         boolean[] visited = new boolean[n];
+        
+//         for(int i=0 ; i<n ; i++) {
+//             if(!visited[i]) {
+//                 visited[i] = true;
+//                 provinces++;
+                
+//                 dfs(i, isConnected, visited);
+//             }
+//         }
+//         return provinces;
+//     }
+    
+//     public void dfs(int src, int[][] isConnected, boolean[] visited) {
+//         int[] nbrs = isConnected[src];
+        
+//         for(int i=0 ; i<nbrs.length ; i++) {
+//             if(!visited[i] && nbrs[i]==1) {
+//                 visited[i] = true;
+//                 dfs(i, isConnected, visited);
+//             }
+//         }
+//     } 
+    
+    
+    // 4) Using Adjacency Matrix + BFS
     public int findCircleNum(int[][] isConnected) {
         int n = isConnected.length;
-        int provinces = 0;
         boolean[] visited = new boolean[n];
         
+        int provinces = 0;
         for(int i=0 ; i<n ; i++) {
             if(!visited[i]) {
-                visited[i] = true;
-                provinces++;
-                
-                dfs(i, isConnected, visited);
+                provinces++;                
+                bfs(i, isConnected, visited);
             }
         }
         return provinces;
     }
     
-    public void dfs(int src, int[][] isConnected, boolean[] visited) {
-        int[] nbrs = isConnected[src];
+    public void bfs(int src, int[][] isConnected, boolean[] visited) {
+        Queue<Integer> q = new ArrayDeque<>();
+        q.add(src);
+        visited[src] = true;
         
-        for(int i=0 ; i<nbrs.length ; i++) {
-            if(!visited[i] && nbrs[i]==1) {
-                visited[i] = true;
-                dfs(i, isConnected, visited);
+        while(!q.isEmpty()) {
+            // R - Remove
+            int elem = q.remove();
+            
+            // A - Add
+            int[] nbrs = isConnected[elem];
+            for(int i=0 ; i<isConnected.length ; i++) {
+                if(nbrs[i]==1 && !visited[i]) {
+                    visited[i] = true;
+                    q.add(i);
+                }
             }
         }
     } 
+    
 }
