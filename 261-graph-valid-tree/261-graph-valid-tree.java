@@ -58,6 +58,8 @@ class Solution {
                 
 //                 // This condition is for avoiding trivial cycles
 //                 if(nbr != seen.get(src)) {
+    
+//                     // This condition is for checking if it contains cycle
 //                     if(seen.containsKey(nbr))
 //                         return false;
 
@@ -77,29 +79,31 @@ class Solution {
             - graph should be fully connected. A single component.
             - graph should have exactly n-1 edges
     */
-    public boolean validTree(int n, int[][] edges) {
-        if(edges.length != n-1)
-            return false;
+//     public boolean validTree(int n, int[][] edges) {
+//         if(edges.length != n-1)
+//             return false;
         
-        List<Integer>[] adjList = getAdjList(n, edges);
-        Set<Integer> seen = new HashSet<>();
+//         List<Integer>[] adjList = getAdjList(n, edges);
+//         Set<Integer> seen = new HashSet<>();
         
-        int src = 0;
-        seen.add(src);
-        dfs(src, adjList, seen);
+//         int src = 0;
+//         seen.add(src);
+//         dfs(src, adjList, seen);
         
-        return seen.size() == n;
-    }
+//         return seen.size() == n;
+//     }
     
-    private void dfs(int src, List<Integer>[] adjList, Set<Integer> seen) {
-        List<Integer> nbrs = adjList[src];
-        for(int nbr : nbrs) {
-            if(!seen.contains(nbr)) {
-                seen.add(nbr);
-                dfs(nbr, adjList, seen);
-            }
-        }
-    }
+//     private void dfs(int src, List<Integer>[] adjList, Set<Integer> seen) {
+//         List<Integer> nbrs = adjList[src];
+//         for(int nbr : nbrs) {
+//             if(!seen.contains(nbr)) {
+//                 seen.add(nbr);
+//                 dfs(nbr, adjList, seen);
+//             }
+//         }
+//     }
+    
+    
     
     // 4) Advanced Graph Theory + BFS
     /*
@@ -107,9 +111,29 @@ class Solution {
             - graph should be fully connected. A single component.
             - graph should have exactly n-1 edges
     */
-//     public boolean validTree(int n, int[][] edges) {
+    public boolean validTree(int n, int[][] edges) {
+        if(edges.length != n-1)
+            return false;
         
-//     }
+        List<Integer>[] adjList = getAdjList(n, edges);
+        
+        Set<Integer> seen = new HashSet<>();
+        Queue<Integer> q = new ArrayDeque<>();
+        seen.add(0);
+        q.add(0);
+        
+        while(!q.isEmpty()) {
+            int src = q.remove();
+            
+            for(int nbr : adjList[src]) {
+                if(!seen.contains(nbr)) {
+                    seen.add(nbr);
+                    q.add(nbr);
+                }
+            }
+        }
+        return seen.size()==n;
+    }
     
     private List<Integer>[] getAdjList(int n, int[][] edges) {
         List<Integer>[] adjList = new ArrayList[n];
