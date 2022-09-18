@@ -18,6 +18,7 @@ class Solution {
 //     private boolean containsCycleDfs(Integer src, Integer prev, List<Integer>[] adjList, Set<Integer> visited) {
 //         List<Integer> nbrs = adjList[src];
 //         for(int nbr : nbrs) {
+    
 //             // This condition is for avoiding trivial cycles
 //             if(nbr!=prev) {
 //                 if(visited.contains(nbr))
@@ -39,32 +40,34 @@ class Solution {
             - graph should be fully connected. A single component.
             - graph should not contain any cycle
     */
-    public boolean validTree(int n, int[][] edges) {
-        List<Integer>[] adjList = getAdjList(n, edges);
+//     public boolean validTree(int n, int[][] edges) {
+//         List<Integer>[] adjList = getAdjList(n, edges);
         
-        Queue<Integer> q = new ArrayDeque<>();
-        Map<Integer, Integer> seen = new HashMap<>();
-        seen.put(0, -1);
-        q.add(0);
+//         Queue<Integer> q = new ArrayDeque<>();
+//         Map<Integer, Integer> seen = new HashMap<>();
+//         seen.put(0, -1);
+//         q.add(0);
         
-        while(!q.isEmpty()) {
-            // R - Remove
-            Integer src = q.remove();
+//         while(!q.isEmpty()) {
+//             // R - Remove
+//             Integer src = q.remove();
             
-            // Add
-            List<Integer> nbrs = adjList[src];
-            for(int nbr : nbrs) {
-                if(nbr != seen.get(src)) {
-                    if(seen.containsKey(nbr))
-                        return false;
+//             // Add
+//             List<Integer> nbrs = adjList[src];
+//             for(int nbr : nbrs) {
+                
+//                 // This condition is for avoiding trivial cycles
+//                 if(nbr != seen.get(src)) {
+//                     if(seen.containsKey(nbr))
+//                         return false;
 
-                    seen.put(nbr, src);
-                    q.add(nbr);
-                }
-            }
-        }
-        return seen.size()==n;
-    }
+//                     seen.put(nbr, src);
+//                     q.add(nbr);
+//                 }
+//             }
+//         }
+//         return seen.size()==n;
+//     }
     
     
     
@@ -74,11 +77,29 @@ class Solution {
             - graph should be fully connected. A single component.
             - graph should have exactly n-1 edges
     */
-//     public boolean validTree(int n, int[][] edges) {
+    public boolean validTree(int n, int[][] edges) {
+        if(edges.length != n-1)
+            return false;
         
-//     }
+        List<Integer>[] adjList = getAdjList(n, edges);
+        Set<Integer> seen = new HashSet<>();
+        
+        int src = 0;
+        seen.add(src);
+        dfs(src, adjList, seen);
+        
+        return seen.size() == n;
+    }
     
-    
+    private void dfs(int src, List<Integer>[] adjList, Set<Integer> seen) {
+        List<Integer> nbrs = adjList[src];
+        for(int nbr : nbrs) {
+            if(!seen.contains(nbr)) {
+                seen.add(nbr);
+                dfs(nbr, adjList, seen);
+            }
+        }
+    }
     
     // 4) Advanced Graph Theory + BFS
     /*
