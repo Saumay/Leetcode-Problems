@@ -18,15 +18,15 @@ class Solution {
     private boolean containsCycleDfs(Integer src, Integer prev, List<Integer>[] adjList, Set<Integer> visited) {
         List<Integer> nbrs = adjList[src];
         for(int nbr : nbrs) {
-            if(nbr==prev)
-                continue;
-            
-            if(visited.contains(nbr))
-                return true;
-            
-            visited.add(nbr);
-            if(containsCycleDfs(nbr, src, adjList, visited))
-                return true;
+            // This condition is for avoiding trivial cycles
+            if(nbr!=prev) {
+                if(visited.contains(nbr))
+                    return true;
+
+                visited.add(nbr);
+                if(containsCycleDfs(nbr, src, adjList, visited))
+                    return true;
+            }
         }
         return false;
     }
