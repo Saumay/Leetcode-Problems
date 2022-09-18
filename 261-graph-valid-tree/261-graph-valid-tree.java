@@ -7,15 +7,10 @@ class Solution {
             - graph should not contain any cycle
     */
     public boolean validTree(int n, int[][] edges) {
-        if(n<2)
-            return true;
-        if(edges==null || edges.length==0)
-            return false;
-        
         List<Integer>[] adjList = getAdjList(n, edges);
         Set<Integer> visited = new HashSet<>();
         
-        int src = edges[0][0];
+        int src = 0;
         visited.add(src);
         return !containsCycleDfs(src, -1, adjList, visited) && visited.size()==n;
     }
@@ -38,19 +33,13 @@ class Solution {
     
     private List<Integer>[] getAdjList(int n, int[][] edges) {
         List<Integer>[] adjList = new ArrayList[n];
-        for(int[] edge : edges) {
-            int i = edge[0];
-            int j = edge[1];
-            
-            if(adjList[i] == null)
-                adjList[i] = new ArrayList<>();
-            if(adjList[j] == null)
-                adjList[j] = new ArrayList<>();
-            
-            adjList[i].add(j);
-            adjList[j].add(i);
-        }
+        for(int i=0 ; i<n ; i++)
+            adjList[i] = new ArrayList<>();
         
+        for(int[] edge : edges) {            
+            adjList[edge[0]].add(edge[1]);
+            adjList[edge[1]].add(edge[0]);
+        }
         return adjList;
     }
     
