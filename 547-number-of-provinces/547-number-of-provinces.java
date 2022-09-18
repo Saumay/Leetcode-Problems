@@ -57,48 +57,77 @@ class Solution {
 //     }
     
     
-    // 2) Using DFS
+    // 2) Using Adjacency List + DFS
+//     public int findCircleNum(int[][] isConnected) {
+//         int n = isConnected.length;
+//         List<Integer>[] adjList = getAdjacencyList(isConnected);
+        
+//         int provinces = 0;
+//         boolean[] visited = new boolean[n];
+//         for(int i=0 ; i<n ; i++) {
+//             if(!visited[i]) {
+//                 provinces++;
+//                 visited[i] = true;
+//                 dfs(i, adjList, visited);
+//             }
+//         }
+//         return provinces;
+//     }
+    
+//     public void dfs(int src, List<Integer>[] adjList, boolean[] visited) {
+//         List<Integer> nbrs = adjList[src];
+        
+//         for(int nbr : nbrs) {
+//             if(!visited[nbr]) {
+//                 visited[nbr] = true;
+//                 dfs(nbr, adjList, visited);
+//             }
+//         }
+//     } 
+    
+//     private List<Integer>[] getAdjacencyList(int[][] isConnected) {
+//         int n = isConnected.length;
+//         List<Integer>[] adjacencyList = new ArrayList[n];
+        
+//         for(int i=0 ; i<n ; i++) {
+//             for(int j=0 ; j<n ; j++) {
+//                 if(isConnected[i][j] == 1) {
+//                     if(adjacencyList[i] == null)
+//                         adjacencyList[i] = new ArrayList<>();
+
+//                     adjacencyList[i].add(j);
+//                 }
+//             }
+//         }
+//         return adjacencyList;
+//     }
+    
+    
+    // 3) Using Adjacency Matrix + DFS
     public int findCircleNum(int[][] isConnected) {
         int n = isConnected.length;
-        List<Integer>[] adjList = getAdjacencyList(isConnected);
-        
         int provinces = 0;
         boolean[] visited = new boolean[n];
+        
         for(int i=0 ; i<n ; i++) {
             if(!visited[i]) {
-                provinces++;
                 visited[i] = true;
-                dfs(i, adjList, visited);
+                provinces++;
+                
+                dfs(i, isConnected, visited);
             }
         }
         return provinces;
     }
     
-    public void dfs(int src, List<Integer>[] adjList, boolean[] visited) {
-        List<Integer> nbrs = adjList[src];
+    public void dfs(int src, int[][] isConnected, boolean[] visited) {
+        int[] nbrs = isConnected[src];
         
-        for(int nbr : nbrs) {
-            if(!visited[nbr]) {
-                visited[nbr] = true;
-                dfs(nbr, adjList, visited);
+        for(int i=0 ; i<nbrs.length ; i++) {
+            if(!visited[i] && nbrs[i]==1) {
+                visited[i] = true;
+                dfs(i, isConnected, visited);
             }
         }
     } 
-    
-    private List<Integer>[] getAdjacencyList(int[][] isConnected) {
-        int n = isConnected.length;
-        List<Integer>[] adjacencyList = new ArrayList[n];
-        
-        for(int i=0 ; i<n ; i++) {
-            for(int j=0 ; j<n ; j++) {
-                if(isConnected[i][j] == 1) {
-                    if(adjacencyList[i] == null)
-                        adjacencyList[i] = new ArrayList<>();
-
-                    adjacencyList[i].add(j);
-                }
-            }
-        }
-        return adjacencyList;
-    }
 }
