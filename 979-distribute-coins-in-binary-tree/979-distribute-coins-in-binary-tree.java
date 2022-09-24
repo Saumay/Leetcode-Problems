@@ -18,16 +18,16 @@ class Solution {
     private int minCoinsRequired = 0;
     
     public int distributeCoins(TreeNode root) {
-        dfs(root);
+        extraOrRequiredCoins(root);
         return minCoinsRequired;
     }
     
-    public int dfs(TreeNode root) {
+    public int extraOrRequiredCoins(TreeNode root) {
         if(root==null)
             return 0;
         
-        int left = dfs(root.left);
-        int right = dfs(root.right);
+        int left = extraOrRequiredCoins(root.left);
+        int right = extraOrRequiredCoins(root.right);
         minCoinsRequired += Math.abs(left) + Math.abs(right);
         return root.val-1 + left + right;
     }
