@@ -25,21 +25,21 @@ class Solution {
         
         Map<Node, Node> clonedMap = new HashMap<>();
         clonedMap.put(node, new Node(node.val));
-        cloneGraph(node, clonedMap);
+        dfs(node, clonedMap);
+        
         return clonedMap.get(node);
     }
     
-    private void cloneGraph(Node srcNode, Map<Node, Node> clonedMap) {
-        List<Node> nbrs = srcNode.neighbors;
+    private void dfs(Node node, Map<Node, Node> clonedMap) {
+        List<Node> nbrs = node.neighbors;
         
-        Node cloned = clonedMap.get(srcNode);
+        Node clonedSrc = clonedMap.get(node);
         for(Node nbr : nbrs) {
             if(!clonedMap.containsKey(nbr)) {
                 clonedMap.put(nbr, new Node(nbr.val));
-                cloneGraph(nbr, clonedMap);
+                dfs(nbr, clonedMap);
             }
-            
-            cloned.neighbors.add(clonedMap.get(nbr));
+            clonedSrc.neighbors.add(clonedMap.get(nbr));
         }
     }
 }
