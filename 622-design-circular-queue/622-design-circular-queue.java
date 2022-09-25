@@ -1,7 +1,6 @@
 class MyCircularQueue {
 
     private int[] arr;
-    private int capacity;
     private int count;
     private int front;
     
