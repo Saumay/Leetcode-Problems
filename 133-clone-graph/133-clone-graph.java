@@ -21,28 +21,28 @@ class Node {
 class Solution {
     
     // 1) Void recursion method
-    public Node cloneGraph(Node node) {
-        if(node == null)
-            return null;
+//     public Node cloneGraph(Node node) {
+//         if(node == null)
+//             return null;
         
-        Map<Node, Node> clonedMap = new HashMap<>();
-        clonedMap.put(node, new Node(node.val));
-        dfs(node, clonedMap);
-        return clonedMap.get(node);
-    }
+//         Map<Node, Node> clonedMap = new HashMap<>();
+//         clonedMap.put(node, new Node(node.val));
+//         dfs(node, clonedMap);
+//         return clonedMap.get(node);
+//     }
 
-    private void dfs(Node node, Map<Node, Node> clonedMap) {
-        Node cloned = clonedMap.get(node);
+//     private void dfs(Node node, Map<Node, Node> clonedMap) {
+//         Node cloned = clonedMap.get(node);
         
-        List<Node> nbrs = node.neighbors;        
-        for(Node nbr : nbrs) {
-            if(!clonedMap.containsKey(nbr)) {
-                clonedMap.put(nbr, new Node(nbr.val));
-                dfs(nbr, clonedMap);
-            }
-            cloned.neighbors.add(clonedMap.get(nbr));
-        }
-    }
+//         List<Node> nbrs = node.neighbors;        
+//         for(Node nbr : nbrs) {
+//             if(!clonedMap.containsKey(nbr)) {
+//                 clonedMap.put(nbr, new Node(nbr.val));
+//                 dfs(nbr, clonedMap);
+//             }
+//             cloned.neighbors.add(clonedMap.get(nbr));
+//         }
+//     }
     
     
     // 2) Recursion method returning cloned graph
@@ -67,4 +67,32 @@ class Solution {
 //         }
 //         return clonedNode;
 //     }
+    
+    
+    // 3) BFS
+    public Node cloneGraph(Node node) {
+        if(node == null)
+            return null;
+        
+        Map<Node, Node> clonedMap = new HashMap<>();
+        Queue<Node> queue = new ArrayDeque<>();
+        queue.add(node);
+        clonedMap.put(node, new Node(node.val));
+        
+        while(!queue.isEmpty()) {
+            // Remove
+            Node cur = queue.remove();
+            Node cloned = clonedMap.get(cur);
+            
+            // Add
+            for(Node nbr : cur.neighbors) {
+                if(!clonedMap.containsKey(nbr)) {
+                    clonedMap.put(nbr, new Node(nbr.val));
+                    queue.add(nbr);
+                }
+                cloned.neighbors.add(clonedMap.get(nbr));
+            }
+        }
+        return clonedMap.get(node);
+    }
 }
