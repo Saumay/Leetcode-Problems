@@ -1,4 +1,7 @@
 class Solution {
+    // 1) Finding countWithAtMostK for k.
+//          Finding countWithAtMostK for k-1.
+//          Subtracting countWithAtMostK for k with countWithAtMostK for k-1
 //     public int subarraysWithKDistinct(int[] nums, int k) {
 //         return getCountWithAtMostK(nums, k) - getCountWithAtMostK(nums, k-1);
 //     }
@@ -25,6 +28,7 @@ class Solution {
 //     }
     
     
+    // 2) Maintaining 2 hashMaps. 1st one storing atMost K unique elements. 2nd one storing atMost k-1 unique elements.
     public int subarraysWithKDistinct(int[] nums, int k) {
         int n = nums.length, left1=0, left2=0;
         int count = 0;
