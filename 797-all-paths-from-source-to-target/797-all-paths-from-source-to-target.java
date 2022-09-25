@@ -30,7 +30,34 @@ class Solution {
 //     }
     
     
-    // 2) Recursion (Method returning paths)
+    // 2) Recursion (Method returning paths)    
+//     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+//         int src = 0;
+//         int dest = graph.length-1;
+        
+//         return getAllPaths(graph, src, dest);
+//     }
+    
+//     private List<List<Integer>> getAllPaths(int[][] graph, int src, int dest) {
+//         List<List<Integer>> paths = new ArrayList<>();
+//         if(src==dest) {
+//             paths.add(new LinkedList<>());
+//             paths.get(0).add(src);
+//             return paths;
+//         }
+        
+//         int[] nbrs = graph[src];
+//         for(int nbr : nbrs) {
+//             paths.addAll(getAllPaths(graph, nbr, dest));
+//         }
+//         for(List<Integer> path : paths) {
+//             path.add(0, src);
+//         }
+//         return paths;
+//     }
+    
+    
+    // 3) DP: Recursion + Memoization
     private Map<Integer, List<List<Integer>>> cache = new HashMap<>();
     
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
@@ -47,14 +74,21 @@ class Solution {
             paths.get(0).add(src);
             return paths;
         }
+        if(cache.containsKey(src)) {
+            return cache.get(src);
+        }
         
         int[] nbrs = graph[src];
         for(int nbr : nbrs) {
-            paths.addAll(getAllPaths(graph, nbr, dest));
+            List<List<Integer>> nbrPaths = getAllPaths(graph, nbr, dest);
+            for(List<Integer> nbrPath : nbrPaths) {
+                List<Integer> newPath = new LinkedList<>(nbrPath);
+                newPath.add(0, src);
+                paths.add(newPath);
+            }
         }
-        for(List<Integer> path : paths) {
-            path.add(0, src);
-        }
+        
+        cache.put(src, paths);
         return paths;
     }
 }
