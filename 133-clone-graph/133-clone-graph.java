@@ -24,20 +24,23 @@ class Solution {
             return null;
         
         Map<Node, Node> clonedMap = new HashMap<>();
-        return cloneGraph(node, clonedMap);
+        clonedMap.put(node, new Node(node.val));
+        cloneGraph(node, clonedMap);
+        return clonedMap.get(node);
     }
     
-    private Node cloneGraph(Node src, Map<Node, Node> clonedMap) {
-        if(clonedMap.containsKey(src))
-            return clonedMap.get(src);
+    private void cloneGraph(Node srcNode, Map<Node, Node> clonedMap) {
+        List<Node> nbrs = srcNode.neighbors;
         
-        Node cloned = new Node(src.val);
-        clonedMap.put(src, cloned);
-        
-        for(Node nbr : src.neighbors) {
-            Node clonedNbr = cloneGraph(nbr, clonedMap);
-            cloned.neighbors.add(clonedNbr);
+        Node cloned = clonedMap.getOrDefault(srcNode, new Node(srcNode.val));
+        for(Node nbr : nbrs) {
+            Node nbrCloned = clonedMap.getOrDefault(nbr, new Node(nbr.val));
+            cloned.neighbors.add(nbrCloned);
+            
+            if(!clonedMap.containsKey(nbr)) {
+                clonedMap.put(nbr, nbrCloned);
+                cloneGraph(nbr, clonedMap);
+            }
         }
-        return cloned;
     }
 }
