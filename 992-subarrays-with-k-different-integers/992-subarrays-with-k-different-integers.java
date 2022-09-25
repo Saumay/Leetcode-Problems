@@ -5,20 +5,17 @@ class Solution {
     
     private int getCountWithAtMostK(int[] nums, int k) {
         int n = nums.length;
-        int left = 0;
         Map<Integer, Integer> map = new HashMap<>();
-        int count = 0;
         
+        int count = 0, left = 0;
         for(int right=0 ; right<n ; right++) {
-            int rightVal = nums[right];
-            map.put(rightVal, map.getOrDefault(rightVal, 0)+1);
+            map.put(nums[right], map.getOrDefault(nums[right],0)+1);
             
             while(map.size() > k) {
-                int leftVal = nums[left];
+                map.put(nums[left], map.get(nums[left])-1);
                 
-                map.put(leftVal, map.get(leftVal)-1);
-                if(map.get(leftVal) == 0)
-                    map.remove(leftVal);
+                if(map.get(nums[left])==0)
+                    map.remove(nums[left]);
                 
                 left++;
             }
