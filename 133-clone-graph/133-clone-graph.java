@@ -32,7 +32,7 @@ class Solution {
     private void cloneGraph(Node srcNode, Map<Node, Node> clonedMap) {
         List<Node> nbrs = srcNode.neighbors;
         
-        Node cloned = clonedMap.getOrDefault(srcNode, new Node(srcNode.val));
+        Node cloned = clonedMap.get(srcNode);
         for(Node nbr : nbrs) {
             Node nbrCloned = clonedMap.getOrDefault(nbr, new Node(nbr.val));
             cloned.neighbors.add(nbrCloned);
