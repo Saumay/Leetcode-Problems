@@ -8,13 +8,10 @@ class MyCircularQueue {
     public MyCircularQueue(int k) {
         arr = new int[k];
         front = 0;
-        capacity = k;
         count = 0;
     }
     
-    public boolean enQueue(int value) {
-        print();
-        
+    public boolean enQueue(int value) {        
         if(!isFull()) {
             arr[(front+count)%arr.length] = value;
             count++;
@@ -23,9 +20,7 @@ class MyCircularQueue {
         return false;
     }
     
-    public boolean deQueue() {
-        print();
-        
+    public boolean deQueue() {        
         if(!isEmpty()) {
             front = (front+1)%arr.length;
             count--;
@@ -48,24 +43,6 @@ class MyCircularQueue {
     
     public boolean isFull() {
         return count==arr.length;
-    }
-    
-//     private int increment(int idx) {
-//         return (idx+1)%arr.length;
-//     }
-    
-//     private int decrement(int idx) {
-//         return (idx-1+arr.length)%arr.length;
-//     }
-    
-    private void print() {
-        System.out.println(front + " " + count);
-        
-        // if(!isEmpty()) {
-        //     for(int i=increment(front) ; i!=rear ; i=increment(i))
-        //         System.out.print(arr[i] + " ");
-        //     System.out.println();
-        // }
     }
 }
 
