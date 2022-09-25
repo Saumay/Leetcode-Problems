@@ -30,13 +30,14 @@ class Solution {
 //     }
     
     
-    // 2) DP + Memoization
+    // 2) Recursion (Method returning paths)
+    private Map<Integer, List<List<Integer>>> cache = new HashMap<>();
+    
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
         int src = 0;
         int dest = graph.length-1;
         
-        List<List<Integer>> paths = getAllPaths(graph, src, dest);
-        return paths;
+        return getAllPaths(graph, src, dest);
     }
     
     private List<List<Integer>> getAllPaths(int[][] graph, int src, int dest) {
