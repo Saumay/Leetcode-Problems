@@ -34,13 +34,12 @@ class Solution {
         
         Node cloned = clonedMap.get(srcNode);
         for(Node nbr : nbrs) {
-            Node nbrCloned = clonedMap.getOrDefault(nbr, new Node(nbr.val));
-            cloned.neighbors.add(nbrCloned);
-            
             if(!clonedMap.containsKey(nbr)) {
-                clonedMap.put(nbr, nbrCloned);
+                clonedMap.put(nbr, new Node(nbr.val));
                 cloneGraph(nbr, clonedMap);
             }
+            
+            cloned.neighbors.add(clonedMap.get(nbr));
         }
     }
 }
