@@ -21,51 +21,50 @@ class Node {
 class Solution {
     
     // 1) Void recursion method
-//     public Node cloneGraph(Node node) {
-//         if(node == null)
-//             return null;
-        
-//         Map<Node, Node> clonedMap = new HashMap<>();
-//         clonedMap.put(node, new Node(node.val));
-//         dfs(node, clonedMap);
-        
-//         return clonedMap.get(node);
-//     }
-    
-//     private void dfs(Node node, Map<Node, Node> clonedMap) {
-//         List<Node> nbrs = node.neighbors;
-        
-//         Node clonedSrc = clonedMap.get(node);
-//         for(Node nbr : nbrs) {
-//             if(!clonedMap.containsKey(nbr)) {
-//                 clonedMap.put(nbr, new Node(nbr.val));
-//                 dfs(nbr, clonedMap);
-//             }
-//             clonedSrc.neighbors.add(clonedMap.get(nbr));
-//         }
-//     }
-    
-    
-    // 2) Recursion method returning cloned graph
     public Node cloneGraph(Node node) {
         if(node == null)
             return null;
         
         Map<Node, Node> clonedMap = new HashMap<>();
-        return cloneGraph(node, clonedMap);
+        clonedMap.put(node, new Node(node.val));
+        dfs(node, clonedMap);
+        return clonedMap.get(node);
+    }
+
+    private void dfs(Node node, Map<Node, Node> clonedMap) {
+        Node cloned = clonedMap.get(node);
+        
+        List<Node> nbrs = node.neighbors;        
+        for(Node nbr : nbrs) {
+            if(!clonedMap.containsKey(nbr)) {
+                clonedMap.put(nbr, new Node(nbr.val));
+                dfs(nbr, clonedMap);
+            }
+            cloned.neighbors.add(clonedMap.get(nbr));
+        }
     }
     
-    private Node cloneGraph(Node node, Map<Node, Node> clonedMap) {
-        if(clonedMap.containsKey(node))
-            return clonedMap.get(node);
+    
+    // 2) Recursion method returning cloned graph
+//     public Node cloneGraph(Node node) {
+//         if(node == null)
+//             return null;
         
-        Node clonedNode = new Node(node.val);
-        clonedMap.put(node, clonedNode);
+//         Map<Node, Node> clonedMap = new HashMap<>();
+//         return cloneGraph(node, clonedMap);
+//     }
+    
+//     private Node cloneGraph(Node node, Map<Node, Node> clonedMap) {
+//         if(clonedMap.containsKey(node))
+//             return clonedMap.get(node);
         
-        for(Node nbr : node.neighbors) {
-            Node clonedNbr = cloneGraph(nbr, clonedMap);
-            clonedNode.neighbors.add(clonedNbr);
-        }
-        return clonedNode;
-    }
+//         Node clonedNode = new Node(node.val);
+//         clonedMap.put(node, clonedNode);
+        
+//         for(Node nbr : node.neighbors) {
+//             Node clonedNbr = cloneGraph(nbr, clonedMap);
+//             clonedNode.neighbors.add(clonedNbr);
+//         }
+//         return clonedNode;
+//     }
 }
