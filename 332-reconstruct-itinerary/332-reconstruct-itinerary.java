@@ -12,21 +12,21 @@ class Solution {
     private boolean backtrack(String src, Map<String, List<String>> adjMap, Map<String, boolean[]> visitedMap, List<String> path, int edges) {
         if(path.size() == edges+1)
             return true;
+        if(!adjMap.containsKey(src))
+            return false;
         
-        if(adjMap.containsKey(src)) {
-            for(int i=0 ; i<adjMap.get(src).size() ; i++) {
-                String nbr = adjMap.get(src).get(i);
-                
-                if(!visitedMap.get(src)[i]) {
-                    visitedMap.get(src)[i] = true;
-                    path.add(nbr);
-                    
-                    if(backtrack(nbr, adjMap, visitedMap, path, edges))
-                        return true;
-                    
-                    path.remove(path.size()-1);
-                    visitedMap.get(src)[i] = false;
-                }
+        for(int i=0 ; i<adjMap.get(src).size() ; i++) {
+            String nbr = adjMap.get(src).get(i);
+
+            if(!visitedMap.get(src)[i]) {
+                visitedMap.get(src)[i] = true;
+                path.add(nbr);
+
+                if(backtrack(nbr, adjMap, visitedMap, path, edges))
+                    return true;
+
+                path.remove(path.size()-1);
+                visitedMap.get(src)[i] = false;
             }
         }
         return false;
