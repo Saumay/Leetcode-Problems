@@ -1,4 +1,6 @@
 class Solution {
+    
+    // 1) Backtracking
     public List<String> findItinerary(List<List<String>> tickets) {
         Map<String, List<String>> adjMap = getAdjMap(tickets);
         Map<String, boolean[]> visitedMap = getVisitedMap(adjMap);
