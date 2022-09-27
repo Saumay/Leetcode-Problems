@@ -3,9 +3,9 @@ class Solution {
         List<Integer>[] adjMap = getAdjMap(n, edges);
         
         Queue<Integer> q = new ArrayDeque<>();
-        Map<Integer, Integer> seen = new HashMap<>();
+        Set<Integer> seen = new HashSet<>();
         q.add(source);
-        seen.put(source, null);
+        seen.add(source);
         
         while(!q.isEmpty()) {
             Integer src = q.remove();
@@ -15,10 +15,10 @@ class Solution {
             
             List<Integer> nbrs = adjMap[src];
             for(Integer nbr : nbrs) {
-                if(seen.containsKey(nbr))
+                if(seen.contains(nbr))
                     continue;
                 
-                seen.put(nbr, src);
+                seen.add(nbr);
                 q.add(nbr);
             }
         }
