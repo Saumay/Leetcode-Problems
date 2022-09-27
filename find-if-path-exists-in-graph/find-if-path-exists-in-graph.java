@@ -1,71 +1,44 @@
 class Solution {
-    
-    // 1) DFS - Recursive
-//     public boolean validPath(int n, int[][] edges, int source, int destination) {
-//         List<Integer>[] adjList = getAdjList(n, edges);
-//         boolean[] seen = new boolean[n];
-        
-//         seen[source] = true;
-//         return dfs(adjList, source, destination, seen);
-//     }
-    
-//     private boolean dfs(List<Integer>[] adjList, int src, int dest, boolean[] seen) {
-//         if(src==dest)
-//             return true;
-        
-//         List<Integer> nbrs = adjList[src];
-        
-//         for(int nbr : nbrs) {
-//             if(!seen[nbr]) {
-//                 seen[nbr] = true;
-//                 if(dfs(adjList, nbr, dest, seen))
-//                     return true;
-//             }
-//         }
-//         return false;
-//     }
-    
-    
-    // 2) DFS - Iterative
     public boolean validPath(int n, int[][] edges, int source, int destination) {
-        List<Integer>[] adjList = getAdjList(n, edges);
-        boolean[] seen = new boolean[n];
+        List<Integer>[] adjMap = getAdjMap(n, edges);
         
-        seen[source] = true;
-        Deque<Integer> st = new ArrayDeque<>();
-        st.push(source);
+        Queue<Integer> q = new ArrayDeque<>();
+        Map<Integer, Integer> seen = new HashMap<>();
+        q.add(source);
+        seen.put(source, null);
         
-        while(!st.isEmpty()) {
-            // Remove
-            int top = st.pop();
+        while(!q.isEmpty()) {
+            Integer src = q.remove();
             
-            if(top==destination)
+            if(src==destination)
                 return true;
             
-            // Add
-            for(int nbr : adjList[top]) {
-                if(!seen[nbr]) {
-                    seen[nbr] = true;
-                    st.push(nbr);
-                }
+            List<Integer> nbrs = adjMap[src];
+            for(Integer nbr : nbrs) {
+                if(seen.containsKey(nbr))
+                    continue;
+                
+                seen.put(nbr, src);
+                q.add(nbr);
             }
         }
         return false;
     }
     
-    private List<Integer>[] getAdjList(int n, int[][] edges) {
-        List<Integer>[] adjList = new List[n];
+    private List<Integer>[] getAdjMap(int n, int[][] edges) {
+        List<Integer>[] adjMap = new ArrayList[n];
         
         for(int i=0 ; i<n ; i++)
-            adjList[i] = new ArrayList<>();
+            adjMap[i] = new ArrayList<>();
         
         for(int[] edge : edges) {
             int src = edge[0];
             int dest = edge[1];
             
-            adjList[src].add(dest);
-            adjList[dest].add(src);
+            adjMap[src].add(dest);
+            adjMap[dest].add(src);
         }
-        return adjList;
+        
+        return adjMap;
     }
 }
