@@ -15,11 +15,10 @@ class Solution {
             
             List<Integer> nbrs = adjMap[src];
             for(Integer nbr : nbrs) {
-                if(seen.contains(nbr))
-                    continue;
-                
-                seen.add(nbr);
-                q.add(nbr);
+                if(!seen.contains(nbr)) {                
+                    seen.add(nbr);
+                    q.add(nbr);
+                }
             }
         }
         return false;
