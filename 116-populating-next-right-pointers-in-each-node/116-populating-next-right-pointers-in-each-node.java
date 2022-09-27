@@ -22,6 +22,8 @@ class Node {
 */
 
 class Solution {
+    
+    // 1) BFS: Using Queue
 //     public Node connect(Node root) {
 //         if(root==null)
 //             return null;
@@ -56,7 +58,7 @@ class Solution {
 //     }
     
     
-    // 2) Using previously established pointers
+    // 2) Using established next pointers in previous level
     public Node connect(Node root) {
         if(root==null)
             return null;
