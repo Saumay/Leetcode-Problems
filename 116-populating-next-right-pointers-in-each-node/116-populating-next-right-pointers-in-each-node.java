@@ -76,7 +76,6 @@ class Solution {
                 
                 prevLevelHead = prevLevelHead.next;
             }
-            System.out.println();
             
             prevLevel = curLevel;
             curLevel = curLevel.left;
