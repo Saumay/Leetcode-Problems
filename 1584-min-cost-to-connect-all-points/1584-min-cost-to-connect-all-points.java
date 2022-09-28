@@ -1,41 +1,73 @@
 class Solution {
+    
+    // 1) Kruskal's Algorithm
+//     public int minCostConnectPoints(int[][] points) {
+//         int n = points.length;
+//         DisjointSet ds = new DisjointSet(n);
+        
+//         PriorityQueue<Edge> edgesPq = new PriorityQueue<>((e1, e2) -> e1.weight - e2.weight);
+        
+//         // Add all edges in PQ
+//         for(int i=0 ; i<n ; i++) {
+//             for(int j=i+1 ; j<n ; j++) {
+//                 int[] src = points[i];
+//                 int[] dest = points[j];
+                
+//                 Edge edge = new Edge(i, j, getDistance(src, dest));
+//                 edgesPq.add(edge);
+//             }
+//         }
+        
+//         // Get MST edges by polling edges from Priority Queue
+//         int cost = 0;
+//         int mstEdges = 0;
+//         while(mstEdges<n-1) {
+//             Edge minEdge = edgesPq.poll();
+            
+//             if(!ds.connected(minEdge.src, minEdge.dest)) {
+//                 ds.union(minEdge.src, minEdge.dest);
+//                 cost += minEdge.weight;
+//                 mstEdges++;
+//             }
+//         }
+//         return cost;
+//     }
+    
+//     private int getDistance(int[] src, int[] dest) {
+//         return Math.abs(src[0]-dest[0]) + Math.abs(src[1]-dest[1]);
+//     }
+    
+    
+    // 2) Prim's Algorithm
     public int minCostConnectPoints(int[][] points) {
         int n = points.length;
-        DisjointSet ds = new DisjointSet(n);
         
-        List<Edge> edges = new ArrayList<>();
+        PriorityQueue<Edge> pq = new PriorityQueue<>((e1,e2) -> e1.weight-e2.weight);
+        Set<Integer> seen = new HashSet<>();
         
-        // Add all edges in PQ
-        for(int i=0 ; i<n ; i++) {
-            for(int j=i+1 ; j<n ; j++) {
-                int[] src = points[i];
-                int[] dest = points[j];
-                
-                Edge edge = new Edge(i, j, getDistance(src, dest));
-                edges.add(edge);
-            }
-        }
+        Integer curPoint = 0;
+        seen.add(curPoint);
         
-        Collections.sort(edges, (e1, e2) -> e1.weight - e2.weight);
-        
-        // An MST will have exactly n-1 edges as a tree has exactly n-1 edges.
-        // Get MST edges by polling edges from Priority Queue
         int cost = 0;
-        int mstEdges = 0;
-        for(int i=0 ; i<edges.size() && mstEdges<n-1 ; i++) {
-            Edge edge = edges.get(i);
-            
-            if(!ds.connected(edge.src, edge.dest)) {
-                ds.union(edge.src, edge.dest);
-                cost += edge.weight;
-                mstEdges++;
+        while(seen.size()!=n) {
+            for(int i=0 ; i<n ; i++) {
+                if(!seen.contains(i))
+                    pq.add(new Edge(curPoint, i, getDistance(points[curPoint], points[i])));
             }
+            
+            Edge minEdge = pq.poll();
+            while(seen.contains(minEdge.dest))
+                minEdge = pq.poll();
+            
+            curPoint = minEdge.dest;
+            seen.add(curPoint);
+            cost += minEdge.weight;
         }
         return cost;
     }
     
-    private int getDistance(int[] src, int[] dest) {
-        return Math.abs(src[0]-dest[0]) + Math.abs(src[1]-dest[1]);
+    private int getDistance(int[] p1, int[] p2) {
+        return Math.abs(p1[0]-p2[0]) + Math.abs(p1[1]-p2[1]);
     }
 }
 
