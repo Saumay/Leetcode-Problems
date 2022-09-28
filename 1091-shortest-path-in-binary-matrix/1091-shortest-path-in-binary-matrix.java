@@ -1,16 +1,55 @@
 class Solution {
     
-    private int[][] dirs = new int[][] {{0,1}, {1,0}, {-1,0}, {0,-1}, {-1,1}, {1,-1}, {1,1}, {-1,-1}};
+    // 1) Overwriting input array
+//     private int[][] dirs = new int[][] {{0,1}, {1,0}, {-1,0}, {0,-1}, {-1,1}, {1,-1}, {1,1}, {-1,-1}};
+    
+//     public int shortestPathBinaryMatrix(int[][] grid) {
+//         int n = grid.length;
+        
+//         if(grid==null || grid.length==0 || grid[0][0]==1 || grid[n-1][n-1]==1)
+//             return -1;
+        
+//         Queue<int[]> q = new ArrayDeque<>();
+//         grid[0][0] = 1;
+//         q.add(new int[] {0,0});
+        
+//         int pathLen = 0;
+//         while(!q.isEmpty()) {
+//             int size = q.size();
+            
+//             pathLen++;
+//             for(int i=0 ; i<size ; i++) {
+//                 // R - Remove
+//                 int[] cur = q.remove();
+                
+//                 // P - Processing
+//                 if(cur[0]==n-1 && cur[1]==n-1)
+//                     return pathLen;
+                
+//                 // A - Add neighbors
+//                 for(int[] dir : getValidNeighbors(grid, cur[0], cur[1])) {
+//                     grid[dir[0]][dir[1]] = 1;
+//                     q.add(new int[] {dir[0], dir[1]});
+//                 }
+//             }
+//         }
+//         return -1;
+//     }
+    
+    
+    // 2) Overwriting input array
+    private int[][] dirs = new int[][] {{0,1},{1,0},{-1,0},{0,-1},{1,1},{-1,1},{1,-1},{-1,-1}};
     
     public int shortestPathBinaryMatrix(int[][] grid) {
         int n = grid.length;
         
-        if(grid==null || grid.length==0 || grid[0][0]==1 || grid[n-1][n-1]==1)
+        if(grid==null || grid.length==0 || grid[0][0]!=0 || grid[n-1][n-1]!=0)
             return -1;
         
         Queue<int[]> q = new ArrayDeque<>();
-        grid[0][0] = 1;
+        boolean[][] visited = new boolean[n][n];
         q.add(new int[] {0,0});
+        visited[0][0] = true;
         
         int pathLen = 0;
         while(!q.isEmpty()) {
@@ -18,17 +57,19 @@ class Solution {
             
             pathLen++;
             for(int i=0 ; i<size ; i++) {
-                // R - Remove
                 int[] cur = q.remove();
                 
-                // P - Processing
                 if(cur[0]==n-1 && cur[1]==n-1)
                     return pathLen;
                 
-                // A - Add neighbors
-                for(int[] dir : getValidNeighbors(grid, cur[0], cur[1])) {
-                    grid[dir[0]][dir[1]] = 1;
-                    q.add(new int[] {dir[0], dir[1]});
+                for(int[] nbr : getValidNeighbors(grid, cur[0], cur[1])) {
+                    int nbrI = nbr[0];
+                    int nbrJ = nbr[1];
+                    
+                    if(!visited[nbrI][nbrJ]) {
+                        visited[nbrI][nbrJ] = true;
+                        q.add(nbr);
+                    }
                 }
             }
         }
