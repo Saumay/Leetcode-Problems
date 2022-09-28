@@ -16,7 +16,7 @@ class Solution {
                 if(grid[i][j] == 2)
                     q.add(new int[] {i,j});
                 else if(grid[i][j] == 1)
-                    fresh.add(stringify(new int[] {i,j}));
+                    fresh.add(stringify(i,j));
             }
         }
         if(fresh.isEmpty())
@@ -29,10 +29,7 @@ class Solution {
             for(int i=0 ; i<size ; i++) {
                 int[] cell = q.remove();
                 
-                fresh.remove(stringify(cell));
-                
-                // fresh.stream().forEach(cc -> System.out.print(cc[0] + "," + cc[1] + " "));
-                // System.out.println("----" + cell[0] + "," + cell[1]);
+                fresh.remove(stringify(cell[0], cell[1]));
                 
                 if(fresh.isEmpty())
                     return time;
@@ -52,7 +49,7 @@ class Solution {
         return -1;
     }
     
-    private String stringify(int[] cell) {
-        return String.valueOf(cell[0]) + "," + String.valueOf(cell[1]);
+    private String stringify(int x, int y) {
+        return String.valueOf(x) + "," + String.valueOf(y);
     }
 }
