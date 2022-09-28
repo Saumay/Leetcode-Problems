@@ -45,8 +45,4 @@ class Solution {
         }
         return fresh>0 ? -1 : time;
     }
-    
-    private String stringify(int x, int y) {
-        return String.valueOf(x) + "," + String.valueOf(y);
-    }
 }
