@@ -19,7 +19,7 @@ class Solution {
         // Get MST edges by polling edges from Priority Queue
         int cost = 0;
         int mstEdges = 0;
-        while(mstEdges<n-1 && !edgesPq.isEmpty()) {
+        while(mstEdges<n-1) {
             Edge minEdge = edgesPq.poll();
             
             if(!ds.connected(minEdge.src, minEdge.dest)) {
