@@ -18,11 +18,14 @@ class Solution {
             
             pathLen++;
             for(int i=0 ; i<size ; i++) {
+                // R - Remove
                 int[] cur = q.remove();
                 
+                // P - Processing
                 if(cur[0]==n-1 && cur[1]==n-1)
                     return pathLen;
                 
+                // A - Add neighbors
                 for(int[] dir : dirs) {
                     int nbrI = cur[0] + dir[0];
                     int nbrJ = cur[1] + dir[1];
@@ -33,7 +36,6 @@ class Solution {
                     }
                 }
             }
-            // pathLen++;
         }
         return -1;
     }
