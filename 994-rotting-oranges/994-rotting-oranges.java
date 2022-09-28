@@ -23,11 +23,10 @@ class Solution {
         if(fresh==0)
             return 0;
         
-        int time=0;
+        int time=-1;
         while(!q.isEmpty()) {
             int size = q.size();
                        
-            time++;
             for(int i=0 ; i<size ; i++) {
                 int[] cell = q.remove();
                 
@@ -37,16 +36,14 @@ class Solution {
                     
                     if(nbrI>=0 && nbrJ>=0 && nbrI<m && nbrJ<n && grid[nbrI][nbrJ]==1) {
                         fresh--;
-                        if(fresh==0)
-                            return time;
-                        
                         grid[nbrI][nbrJ] = 2;
                         q.add(new int[] {nbrI, nbrJ});
                     }
                 }
             }
+            time++;
         }
-        return -1;
+        return fresh>0 ? -1 : time;
     }
     
     private String stringify(int x, int y) {
