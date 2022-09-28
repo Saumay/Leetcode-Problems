@@ -45,7 +45,6 @@ class Solution {
                     }
                 }
             }
-            // time++;
         }
         return -1;
     }
