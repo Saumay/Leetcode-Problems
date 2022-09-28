@@ -26,17 +26,27 @@ class Solution {
                     return pathLen;
                 
                 // A - Add neighbors
-                for(int[] dir : dirs) {
-                    int nbrI = cur[0] + dir[0];
-                    int nbrJ = cur[1] + dir[1];
-                    
-                    if(nbrI>=0 && nbrJ>=0 && nbrI<n && nbrJ<n && grid[nbrI][nbrJ]==0) {
-                        grid[nbrI][nbrJ] = 1;
-                        q.add(new int[] {nbrI, nbrJ});
-                    }
+                for(int[] dir : getValidNeighbors(grid, cur[0], cur[1])) {
+                    grid[dir[0]][dir[1]] = 1;
+                    q.add(new int[] {dir[0], dir[1]});
                 }
             }
         }
         return -1;
+    }
+    
+    private List<int[]> getValidNeighbors(int[][] grid, int row, int col) {
+        int n = grid.length;
+        List<int[]> neighbors = new LinkedList<>();
+        
+        for(int[] dir : dirs) {
+            int nbrI = row + dir[0];
+            int nbrJ = col + dir[1];
+
+            if(nbrI>=0 && nbrJ>=0 && nbrI<n && nbrJ<n && grid[nbrI][nbrJ]==0) {
+                neighbors.add(new int[] {nbrI, nbrJ});
+            }
+        }
+        return neighbors;
     }
 }
