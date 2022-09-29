@@ -8,8 +8,9 @@ class Solution {
         if(image[sr][sc]==color)
             return image;
         
-        dfs(image, sr, sc, image[sr][sc], color);
+        int origColor = image[sr][sc];
         image[sr][sc] = color;
+        dfs(image, sr, sc, origColor, color);
         return image;
     }
     
@@ -48,5 +49,15 @@ class Solution {
 //         for(int[] dir : dirs) {
 //             dfs(image, sr+dir[0], sc+dir[1], origColor, newColor);
 //         }
+//     }
+    
+    
+    // 2) BFS
+//     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+//         // DFS
+//         if(image[sr][sc]==color)
+//             return image;
+        
+        
 //     }
 }
