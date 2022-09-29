@@ -45,23 +45,26 @@ class Solution {
         PriorityQueue<Edge> pq = new PriorityQueue<>((e1,e2) -> e1.weight-e2.weight);
         Set<Integer> seen = new HashSet<>();
         
-        Integer curPoint = 0;
+        int cost = 0;
+        int curPoint = 0;
         seen.add(curPoint);
         
-        int cost = 0;
-        while(seen.size()!=n) {
+        while(seen.size() < n) {
             for(int i=0 ; i<n ; i++) {
-                if(i != curPoint)
-                    pq.add(new Edge(curPoint, i, getDistance(points[curPoint], points[i])));
+                if(!seen.contains(i)) {
+                    int[] src = points[curPoint];
+                    int[] dest = points[i];
+                    pq.add(new Edge(curPoint, i, getDistance(src, dest)));
+                }
             }
-            
+                
             Edge minEdge = pq.poll();
             while(seen.contains(minEdge.dest))
                 minEdge = pq.poll();
-            
-            curPoint = minEdge.dest;
-            seen.add(curPoint);
+
+            seen.add(minEdge.dest);
             cost += minEdge.weight;
+            curPoint = minEdge.dest;
         }
         return cost;
     }
