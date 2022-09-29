@@ -41,36 +41,33 @@ class Solution {
     // 2) Prim's Algorithm
     public int minCostConnectPoints(int[][] points) {
         int n = points.length;
-        PriorityQueue<Edge> pq = new PriorityQueue<>((e1,e2) -> e1.weight-e2.weight);
         
-        Integer[] minDist = new Integer[n];
+        PriorityQueue<Edge> pq = new PriorityQueue<>((e1,e2) -> e1.weight-e2.weight);
         Set<Integer> seen = new HashSet<>();
-        int curPoint = 0;
-        seen.add(curPoint);
-        minDist[0] = 0;
         
         int cost = 0;
+        int curPoint = 0;
+        seen.add(curPoint);
+        
         while(seen.size() < n) {
+            // 1. Add all edges of curPoint in PriorityEdge for consideration
             for(int i=0 ; i<n ; i++) {
                 if(!seen.contains(i)) {
-                    int dist = getDistance(points[curPoint], points[i]);
-                    if(minDist[i]==null || dist<minDist[i])
-                        minDist[i] = dist;
+                    int[] src = points[curPoint];
+                    int[] dest = points[i];
+                    pq.add(new Edge(curPoint, i, getDistance(src, dest)));
                 }
             }
-            
-            Integer min = null;
-            for(int i=0 ; i<n ; i++) {
-                if(!seen.contains(i) && minDist[i]!=null) {
-                    if(min==null || minDist[i]<min) {
-                        min = minDist[i];
-                        curPoint = i;
-                    }
-                }
-            }
-            
-            cost += min;
-            seen.add(curPoint);
+                
+            // 2. Fetch an edge from priorityQueue till we don't find a connecting edge(An edge whose destination we haven't visited yet)
+            Edge minEdge = pq.poll();
+            while(seen.contains(minEdge.dest))
+                minEdge = pq.poll();
+
+            // 3. Update variables for next iteration
+            seen.add(minEdge.dest);
+            cost += minEdge.weight;
+            curPoint = minEdge.dest;
         }
         return cost;
     }
@@ -78,6 +75,48 @@ class Solution {
     private int getDistance(int[] p1, int[] p2) {
         return Math.abs(p1[0]-p2[0]) + Math.abs(p1[1]-p2[1]);
     }
+    
+    
+    // 3) Optimized Prim's Algorithm
+//     public int minCostConnectPoints(int[][] points) {
+//         int n = points.length;        
+//         Integer[] minDist = new Integer[n];
+//         Set<Integer> seen = new HashSet<>();
+        
+//         int curPoint = 0;
+//         seen.add(curPoint);
+//         minDist[0] = 0;
+        
+//         int cost = 0;
+//         while(seen.size() < n) {
+//             // 1. Add all edges of curPoint to 
+//             for(int i=0 ; i<n ; i++) {
+//                 if(!seen.contains(i)) {
+//                     int dist = getDistance(points[curPoint], points[i]);
+//                     if(minDist[i]==null || dist<minDist[i])
+//                         minDist[i] = dist;
+//                 }
+//             }
+            
+//             Integer min = null;
+//             for(int i=0 ; i<n ; i++) {
+//                 if(!seen.contains(i) && minDist[i]!=null) {
+//                     if(min==null || minDist[i]<min) {
+//                         min = minDist[i];
+//                         curPoint = i;
+//                     }
+//                 }
+//             }
+            
+//             cost += min;
+//             seen.add(curPoint);
+//         }
+//         return cost;
+//     }
+    
+//     private int getDistance(int[] p1, int[] p2) {
+//         return Math.abs(p1[0]-p2[0]) + Math.abs(p1[1]-p2[1]);
+//     }
 }
 
 class Edge {
