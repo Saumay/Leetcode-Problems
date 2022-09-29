@@ -2,33 +2,33 @@ class Solution {
     
     private int[][] dirs = new int[][] {{1,0}, {0,1}, {-1,0}, {0,-1}};
     
-        // 1.1) DFS 1
-    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        // DFS
-        if(image[sr][sc]==color)
-            return image;
+    // 1.1) DFS 1
+//     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+//         // DFS
+//         if(image[sr][sc]==color)
+//             return image;
         
-        int origColor = image[sr][sc];
-        image[sr][sc] = color;
-        dfs(image, sr, sc, origColor, color);
-        return image;
-    }
+//         int origColor = image[sr][sc];
+//         image[sr][sc] = color;
+//         dfs(image, sr, sc, origColor, color);
+//         return image;
+//     }
     
     
-    private void dfs(int[][] image, int sr, int sc, int origColor, int newColor) {
-        int m = image.length;
-        int n = image[0].length;
+//     private void dfs(int[][] image, int sr, int sc, int origColor, int newColor) {
+//         int m = image.length;
+//         int n = image[0].length;
         
-        for(int[] dir : dirs) {
-            int nbrI = sr+dir[0];
-            int nbrJ = sc+dir[1];
+//         for(int[] dir : dirs) {
+//             int nbrI = sr+dir[0];
+//             int nbrJ = sc+dir[1];
             
-            if(nbrI>=0 && nbrJ>=0 && nbrI<m && nbrJ<n && image[nbrI][nbrJ]==origColor) {
-                image[nbrI][nbrJ] = newColor;
-                dfs(image, nbrI, nbrJ, origColor, newColor);
-            }
-        }
-    }
+//             if(nbrI>=0 && nbrJ>=0 && nbrI<m && nbrJ<n && image[nbrI][nbrJ]==origColor) {
+//                 image[nbrI][nbrJ] = newColor;
+//                 dfs(image, nbrI, nbrJ, origColor, newColor);
+//             }
+//         }
+//     }
     
     
     // 1.2) DFS 2
@@ -53,11 +53,30 @@ class Solution {
     
     
     // 2) BFS
-//     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-//         // DFS
-//         if(image[sr][sc]==color)
-//             return image;
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        // DFS
+        int origColor = image[sr][sc];
+        if(origColor==color)
+            return image;
         
+        int m = image.length;
+        int n = image[0].length;
+        Queue<int[]> q = new ArrayDeque<>();
+        q.add(new int[] {sr,sc});
         
-//     }
+        while(!q.isEmpty()) {
+            int[] cur = q.remove();
+            
+            image[cur[0]][cur[1]] = color;
+            
+            for(int[] dir : dirs) {
+                int nbrI = dir[0] + cur[0];
+                int nbrJ = dir[1] + cur[1];
+                
+                if(nbrI>=0 && nbrJ>=0 && nbrI<m && nbrJ<n && image[nbrI][nbrJ]==origColor)
+                    q.add(new int[] {nbrI, nbrJ});
+            }
+        }
+        return image;
+    }
 }
