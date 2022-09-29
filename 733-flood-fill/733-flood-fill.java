@@ -13,7 +13,6 @@ class Solution {
 //         return image;
 //     }
     
-    
 //     private void dfs(int[][] image, int sr, int sc, int origColor, int newColor) {
 //         int m = image.length;
 //         int n = image[0].length;
@@ -59,23 +58,25 @@ class Solution {
 //         int m = image.length;
 //         int n = image[0].length;
 //         Queue<int[]> q = new ArrayDeque<>();
+//         image[sr][sc] = color;
 //         q.add(new int[] {sr,sc});
         
 //         while(!q.isEmpty()) {
 //             int[] cur = q.remove();
             
-//             image[cur[0]][cur[1]] = color;
-            
 //             for(int[] dir : dirs) {
-//                 int nbrI = dir[0] + cur[0];
-//                 int nbrJ = dir[1] + cur[1];
+//                 int nbrI = cur[0] + dir[0];
+//                 int nbrJ = cur[1] + dir[1];
                 
-//                 if(nbrI>=0 && nbrJ>=0 && nbrI<m && nbrJ<n && image[nbrI][nbrJ]==origColor)
+//                 if(nbrI>=0 && nbrJ>=0 && nbrI<m && nbrJ<n && image[nbrI][nbrJ]==origColor) {
+//                     image[nbrI][nbrJ] = color;
 //                     q.add(new int[] {nbrI, nbrJ});
+//                 }
 //             }
 //         }
 //         return image;
 //     }
+    
     
     // 2.2) BFS 2
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
@@ -87,19 +88,18 @@ class Solution {
         int n = image[0].length;
         Queue<int[]> q = new ArrayDeque<>();
         q.add(new int[] {sr,sc});
-        image[sr][sc] = color;
         
         while(!q.isEmpty()) {
             int[] cur = q.remove();
             
+            image[cur[0]][cur[1]] = color;
+            
             for(int[] dir : dirs) {
-                int nbrI = cur[0] + dir[0];
-                int nbrJ = cur[1] + dir[1];
+                int nbrI = dir[0] + cur[0];
+                int nbrJ = dir[1] + cur[1];
                 
-                if(nbrI>=0 && nbrJ>=0 && nbrI<m && nbrJ<n && image[nbrI][nbrJ]==origColor) {
-                    image[nbrI][nbrJ] = color;
+                if(nbrI>=0 && nbrJ>=0 && nbrI<m && nbrJ<n && image[nbrI][nbrJ]==origColor)
                     q.add(new int[] {nbrI, nbrJ});
-                }
             }
         }
         return image;
