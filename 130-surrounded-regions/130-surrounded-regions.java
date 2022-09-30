@@ -78,12 +78,16 @@ class Solution {
     }
     
     private void flip(char[][] board, int i, int j) {
-        if(i<0 || j<0 || i>=board.length || j>=board[0].length || board[i][j] != 'O')
+        if(board[i][j] != 'O')
             return;
         
         board[i][j] = '-';
         for(int[] dir : dirs) {
-            flip(board, i+dir[0], j+dir[1]);
+            int nbrI = dir[0] + i;
+            int nbrJ = dir[1] + j;
+            
+            if(nbrI>=0 && nbrJ>=0 && nbrI<board.length && nbrJ<board[0].length)
+                flip(board, i+dir[0], j+dir[1]);
         }
     }
 }
