@@ -21,19 +21,15 @@ class Solution {
         }
         
         while(!q.isEmpty()) {
-            int size = q.size();
+            int[] cur = q.remove();
             
-            for(int i=0 ; i<size ; i++) {
-                int[] cell = q.remove();
+            for(int[] dir : dirs) {
+                int nbrI = cur[0] + dir[0];
+                int nbrJ = cur[1] + dir[1];
                 
-                for(int[] dir : dirs) {
-                    int nbrI = cell[0] + dir[0];
-                    int nbrJ = cell[1] + dir[1];
-                    
-                    if(nbrI>=0 && nbrJ>=0 && nbrI<m && nbrJ<n && dist[nbrI][nbrJ]==-1) {
-                        dist[nbrI][nbrJ] = dist[cell[0]][cell[1]] + 1;
-                        q.add(new int[] {nbrI, nbrJ});
-                    }
+                if(nbrI>=0 && nbrJ>=0 && nbrI<m && nbrJ<n && dist[nbrI][nbrJ]==-1) {
+                    dist[nbrI][nbrJ] = dist[cur[0]][cur[1]]+1;
+                    q.add(new int[] {nbrI, nbrJ});
                 }
             }
         }
