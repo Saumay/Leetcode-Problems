@@ -16,16 +16,16 @@ class Solution {
     private boolean isBipartite(int[][] graph, int cur, int prev, int prevColor, int[] seen) {
         int[] nbrs = graph[cur];
         for(int nbr : nbrs) {
-            if(nbr != prev) {
-                int curColor = prevColor==1 ? -1 : 1;
-                
+            // if(nbr != prev) {                
                 if(seen[nbr] == 0) {
+                    int curColor = prevColor==1 ? -1 : 1;
                     seen[nbr] = curColor;
+                    
                     if(!isBipartite(graph, nbr, prev, curColor, seen))
                         return false;
                 } else if(seen[nbr] == prevColor)
                     return false;
-            }
+            // }
         }
         return true;
     }
