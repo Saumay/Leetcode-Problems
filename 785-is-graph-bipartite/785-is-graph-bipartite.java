@@ -49,20 +49,19 @@ class Solution {
     }
     
     private boolean isBipartiteBfs(int[][] graph, int i, int[] color) {
-        Queue<int[]> q = new ArrayDeque<>();
-        q.add(new int[] {i,1});
+        Queue<Integer> q = new ArrayDeque<>();
+        q.add(i);
         color[i] = 1;
         
         while(!q.isEmpty()) {
-            int[] cur = q.remove();
-            int curId = cur[0];
-            int curColor = cur[1];
+            int cur = q.remove();
+            int curColor = color[cur];
             
-            for(int nbr : graph[curId]) {
+            for(int nbr : graph[cur]) {
                 if(color[nbr] == 0) {
                     int nextColor = curColor==1 ? -1 : 1;
                     color[nbr] = nextColor;
-                    q.add(new int[] {nbr, nextColor});
+                    q.add(nbr);
                 } else if(color[nbr]==curColor)
                     return false;
             }
