@@ -3,29 +3,29 @@ class Solution {
     // 1) Using DFS
     public boolean isBipartite(int[][] graph) {
         int n = graph.length;
-        int[] seen = new int[n];
+        int[] color = new int[n];
         
         for(int i=0 ; i<n ; i++) {
-            if(seen[i] == 0) {
-                seen[i] = 1;
-                if(!isBipartiteDfs(graph, i, seen))
+            if(color[i] == 0) {
+                color[i] = 1;
+                if(!isBipartiteDfs(graph, i, color))
                     return false;
             }
         }
         return true;
     }
     
-    private boolean isBipartiteDfs(int[][] graph, int cur, int[] seen) {
-        int curColor = seen[cur];
+    private boolean isBipartiteDfs(int[][] graph, int cur, int[] color) {
+        int curColor = color[cur];
         
         int[] nbrs = graph[cur];
         for(int nbr : nbrs) {
-            // No need to check trivial cycles since for caller node seen[nbr]==curColor will always be false
-            if(seen[nbr] == 0) {
-                seen[nbr] = curColor==1 ? -1 : 1;;
-                if(!isBipartiteDfs(graph, nbr, seen))
+            // No need to check trivial cycles since for caller node color[nbr]==curColor will always be false
+            if(color[nbr] == 0) {
+                color[nbr] = curColor==1 ? -1 : 1;;
+                if(!isBipartiteDfs(graph, nbr, color))
                     return false;
-            } else if(seen[nbr] == curColor)
+            } else if(color[nbr] == curColor)
                 return false;
         }
         return true;
