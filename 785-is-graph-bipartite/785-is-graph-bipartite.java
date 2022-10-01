@@ -13,17 +13,17 @@ class Solution {
         return true;
     }
     
-    private boolean isBipartite(int[][] graph, int cur, int prev, int prevColor, int[] seen) {
+    private boolean isBipartite(int[][] graph, int cur, int prev, int curColor, int[] seen) {
         int[] nbrs = graph[cur];
         for(int nbr : nbrs) {
             // if(nbr != prev) {                
                 if(seen[nbr] == 0) {
-                    int curColor = prevColor==1 ? -1 : 1;
-                    seen[nbr] = curColor;
+                    int nextColor = curColor==1 ? -1 : 1;
+                    seen[nbr] = nextColor;
                     
-                    if(!isBipartite(graph, nbr, prev, curColor, seen))
+                    if(!isBipartite(graph, nbr, prev, nextColor, seen))
                         return false;
-                } else if(seen[nbr] == prevColor)
+                } else if(seen[nbr] == curColor)
                     return false;
             // }
         }
