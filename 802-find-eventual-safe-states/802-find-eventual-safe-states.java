@@ -135,37 +135,84 @@ class Solution {
     // 0(white) -> node is not visited
     // 1(grey) -> node is part of a cycle
     // 2(black) -> node is safe
-    public List<Integer> eventualSafeNodes(int[][] graph) {
-        int n = graph.length;
-        List<Integer> safeNodes = new LinkedList<>();
+//     public List<Integer> eventualSafeNodes(int[][] graph) {
+//         int n = graph.length;
+//         List<Integer> safeNodes = new LinkedList<>();
         
-        int[] color = new int[n];
+//         int[] color = new int[n];
+        
+//         for(int i=0 ; i<n ; i++) {
+//             if(color[i]==0) {
+//                 hasCycleDfs(graph, i, color);
+//             }
+            
+//             if(color[i]==2) {
+//                 safeNodes.add(i);
+//             }
+//         }
+//         return safeNodes;
+//     }
+    
+//     private boolean hasCycleDfs(int[][] graph, int src, int[] color) {
+//         color[src] = 1;
+        
+//         int[] nbrs = graph[src];
+//         for(int nbr : nbrs) {
+//             if(color[nbr] == 0) {
+//                 if(hasCycleDfs(graph, nbr, color)) 
+//                     return true;
+//             } else if(color[nbr]==1)
+//                 return true;
+//         }
+//         color[src] = 2;
+        
+//         return false;
+//     }
+    
+    
+    // 4) Reverse edges
+    public List<Integer> eventualSafeNodes(int[][] G) {
+        int n = G.length;
+        
+        List<Integer> safeNodes = new LinkedList<>();
+        Set<Integer>[] graph = new HashSet[n];
+        Set<Integer>[] rGraph = new HashSet[n];
+        boolean[] safe = new boolean[n];
+        
+        Queue<Integer> q = new ArrayDeque<>();
         
         for(int i=0 ; i<n ; i++) {
-            if(color[i]==0) {
-                hasCycleDfs(graph, i, color);
-            }
+            graph[i] = new HashSet<>();
+            rGraph[i] = new HashSet<>();
+        }
+        
+        for(int src=0 ; src<n ; src++) {
+            if(G[src].length==0)
+                q.add(src);
             
-            if(color[i]==2) {
-                safeNodes.add(i);
+            for(int nbr : G[src]) {
+                graph[src].add(nbr);
+                rGraph[nbr].add(src);
             }
         }
-        return safeNodes;
-    }
-    
-    private boolean hasCycleDfs(int[][] graph, int src, int[] color) {
-        color[src] = 1;
         
-        int[] nbrs = graph[src];
-        for(int nbr : nbrs) {
-            if(color[nbr] == 0) {
-                if(hasCycleDfs(graph, nbr, color)) 
-                    return true;
-            } else if(color[nbr]==1)
-                return true;
+        while(!q.isEmpty()) {
+            int safeNode = q.remove();
+            safe[safeNode] = true;
+            
+            for(int rNbr : rGraph[safeNode]) {
+                graph[rNbr].remove(safeNode);
+                
+                if(graph[rNbr].isEmpty())
+                    q.add(rNbr);
+            }
         }
-        color[src] = 2;
         
-        return false;
+        for(int i=0 ; i<safe.length ; i++) {
+            if(safe[i])
+                safeNodes.add(i);
+        }
+        
+        return safeNodes;
     }
 }
