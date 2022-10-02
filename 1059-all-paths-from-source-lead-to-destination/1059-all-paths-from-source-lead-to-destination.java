@@ -7,14 +7,14 @@ class Solution {
     }
     
     private boolean leadsToDestination(List<Integer>[] adjList, int src, int dest, int[] color) {
-        color[src] = 1;
         
         List<Integer> nbrs = adjList[src];
         if(nbrs.isEmpty()) {
-            color[src] = 2;
+            // color[src] = 2;
             return src==dest;
         }
         
+        color[src] = 1;
         for(int nbr : nbrs) {
             if(color[nbr]==0) {
                 if(!leadsToDestination(adjList, nbr, dest, color))
