@@ -1,12 +1,14 @@
 class Solution {
     
+                // No need to check trivial cycles since for caller node color[nbr]==curColor will always be false
+
     // 1) Using DFS
     public boolean isBipartite(int[][] graph) {
         int n = graph.length;
         int[] color = new int[n];
         
         for(int i=0 ; i<n ; i++) {
-            if(color[i] == 0) {
+            if(color[i]==0) {
                 color[i] = 1;
                 if(!isBipartiteDfs(graph, i, color))
                     return false;
@@ -15,18 +17,20 @@ class Solution {
         return true;
     }
     
-    private boolean isBipartiteDfs(int[][] graph, int cur, int[] color) {
-        int curColor = color[cur];
+    private boolean isBipartiteDfs(int[][] graph, int src, int[] color) {
+        int[] nbrs = graph[src];
+        int curColor = color[src];
         
-        int[] nbrs = graph[cur];
         for(int nbr : nbrs) {
-            // No need to check trivial cycles since for caller node color[nbr]==curColor will always be false
-            if(color[nbr] == 0) {
-                color[nbr] = curColor==1 ? -1 : 1;;
+            if(color[nbr]==0) {
+                int nextColor = curColor==1 ? -1 : 1;
+                color[nbr] = nextColor;
                 if(!isBipartiteDfs(graph, nbr, color))
                     return false;
-            } else if(color[nbr] == curColor)
-                return false;
+            } else {
+                if(curColor == color[nbr])
+                    return false;
+            }
         }
         return true;
     }
