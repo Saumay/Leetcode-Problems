@@ -92,7 +92,7 @@ class Solution {
 //     }
     
     
-    // 3.1) Use color array to mark visited and visiting nodes (Mark color first and then call dfs)
+    // 3.1) Use color array to mark unvisited, unsafe and safe nodes (Mark color first and then call dfs)
     // 0(white) -> node is not visited
     // 1(grey) -> node is part of a cycle
     // 2(black) -> node is safe
@@ -131,40 +131,40 @@ class Solution {
 //     }
     
     
-    // 3.2) Use color array to mark visited and visiting nodes (Call dfs first and then mark node)
+    // 3.2) Use color array to mark unvisited, unsafe and safe nodes (Call dfs first and then mark node)
     // 0(white) -> node is not visited
     // 1(grey) -> node is part of a cycle
     // 2(black) -> node is safe
-    public List<Integer> eventualSafeNodes(int[][] graph) {
-        int n = graph.length;
-        List<Integer> safeNodes = new LinkedList<>();
-        int[] color = new int[n];
+//     public List<Integer> eventualSafeNodes(int[][] graph) {
+//         int n = graph.length;
+//         List<Integer> safeNodes = new LinkedList<>();
+//         int[] color = new int[n];
         
-        for(int i=0 ; i<n ; i++) {
-            if(color[i]==0)
-                hasCycleDfs(graph, i, color);
+//         for(int i=0 ; i<n ; i++) {
+//             if(color[i]==0)
+//                 hasCycleDfs(graph, i, color);
             
-            if(color[i]==2)
-                safeNodes.add(i);
-        }
-        return safeNodes;
-    }
+//             if(color[i]==2)
+//                 safeNodes.add(i);
+//         }
+//         return safeNodes;
+//     }
         
-    private boolean hasCycleDfs(int[][] graph, int src, int[] color) {
-        color[src] = 1;
+//     private boolean hasCycleDfs(int[][] graph, int src, int[] color) {
+//         color[src] = 1;
         
-        int[] nbrs = graph[src];
-        for(int nbr : nbrs) {
-            if(color[nbr]==0) {
-                if(hasCycleDfs(graph, nbr, color))
-                    return true;
-            } else if(color[nbr]==1)
-                return true;
-        }
+//         int[] nbrs = graph[src];
+//         for(int nbr : nbrs) {
+//             if(color[nbr]==0) {
+//                 if(hasCycleDfs(graph, nbr, color))
+//                     return true;
+//             } else if(color[nbr]==1)
+//                 return true;
+//         }
         
-        color[src] = 2;
-        return false;
-    }
+//         color[src] = 2;
+//         return false;
+//     }
     
     
     // 4) Reverse edges
@@ -212,4 +212,48 @@ class Solution {
         
 //         return safeNodes;
 //     }
+    
+    
+    // 5) Reverse edges + Topological Sort
+    public List<Integer> eventualSafeNodes(int[][] G) {
+        int n = G.length;
+        
+        List<Integer>[] adjListR = new ArrayList[n];
+        int[] indegree = new int[n];
+        Queue<Integer> q = new ArrayDeque<>();
+        List<Integer> safeNodes = new ArrayList<>();
+        
+        for(int i=0 ; i<n ; i++)
+            adjListR[i] = new ArrayList<>();
+        
+        // Populate reverse adjacency list and indegree array
+        for(int i=0 ; i<n ; i++) {            
+            for(int nbr : G[i]) {
+                adjListR[nbr].add(i);
+                indegree[i]++;
+            }
+        }
+        
+        // Add nodes with 0 indegree in queue
+        for(int i=0 ; i<n ; i++) {
+            if(indegree[i]==0)
+                q.add(i);
+        }
+        
+        // Remove from queue
+        while(!q.isEmpty()) {
+            int src = q.remove();
+            safeNodes.add(src);
+            
+            for(int nbr : adjListR[src]) {
+                indegree[nbr]--;
+                if(indegree[nbr]==0)
+                    q.add(nbr);
+            }
+        }
+        
+        Collections.sort(safeNodes);
+        return safeNodes;
+        
+    }
 }
