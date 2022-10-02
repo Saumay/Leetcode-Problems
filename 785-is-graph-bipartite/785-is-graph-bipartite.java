@@ -1,7 +1,5 @@
 class Solution {
     
-                // No need to check trivial cycles since for caller node color[nbr]==curColor will always be false
-
     // 1) Using DFS
     public boolean isBipartite(int[][] graph) {
         int n = graph.length;
@@ -22,6 +20,8 @@ class Solution {
         int curColor = color[src];
         
         for(int nbr : nbrs) {
+            
+            // No need to check trivial cycles since for caller node color[nbr]==curColor will always be false
             if(color[nbr]==0) {
                 int nextColor = curColor==1 ? -1 : 1;
                 color[nbr] = nextColor;
