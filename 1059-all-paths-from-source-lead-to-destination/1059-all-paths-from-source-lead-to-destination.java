@@ -22,7 +22,7 @@ class Solution {
                     return false;
                 
                 color[nbr] = 2;
-            } else if(color[nbr]==1)
+            } else if(color[nbr]==1)        // implies that cycle exists
                 return false;
         }
         return true;
@@ -47,7 +47,7 @@ class Solution {
 //             if(color[nbr]==0) {
 //                 if(!leadsToDestinationDfs(adjList, nbr, dest, color))
 //                     return false;
-//             } else if(color[nbr]==1) 
+//             } else if(color[nbr]==1)         // implies that cycle exists
 //                 return false;
 //         }
         
