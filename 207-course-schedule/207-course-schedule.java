@@ -30,7 +30,7 @@ class Solution {
 //     }
     
     
-    // 2) DFS 1: Cycle Detection in DG (Call dfs first and then mark node)
+    // 2) DFS 1: Cycle Detection in Directed Graph (Call dfs first and then mark node)
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         List<Integer>[] adjList = getAdjList(numCourses, prerequisites);
         
@@ -59,7 +59,7 @@ class Solution {
     }
     
     
-    // 3) DFS 2: Cycle Detection in DG (Mark node and then call dfs)
+    // 3) DFS 2: Cycle Detection in Directed Graph (Mark node and then call dfs)
 //     public boolean canFinish(int numCourses, int[][] prerequisites) {
 //         List<Integer>[] adjList = getAdjList(numCourses, prerequisites);
 //         int[] color = new int[numCourses];
@@ -97,7 +97,7 @@ class Solution {
             adjList[i] = new ArrayList<>();
         
         for(int[] course : prerequisites) {
-            adjList[course[0]].add(course[1]);
+            adjList[course[1]].add(course[0]);
         }
         return adjList;
     }
@@ -116,8 +116,8 @@ class Solution {
 //             adjList[i] = new ArrayList<>();
         
 //         for(int[] course : prerequisites) {
-//             int src = course[0];
-//             int dest = course[1];
+//             int src = course[1];
+//             int dest = course[0];
             
 //             indegrees[dest]++;
 //             adjList[src].add(dest);
