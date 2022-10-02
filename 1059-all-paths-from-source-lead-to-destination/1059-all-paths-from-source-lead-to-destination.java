@@ -1,23 +1,41 @@
 class Solution {
     public boolean leadsToDestination(int n, int[][] edges, int source, int destination) {
+        List<Integer>[] adjList = getAdjList(n, edges);
+        int[] color = new int[n];
+        
+        return leadsToDestination(adjList, source, destination, color);
+    }
+    
+    private boolean leadsToDestination(List<Integer>[] adjList, int src, int dest, int[] color) {
+        color[src] = 1;
+        
+        List<Integer> nbrs = adjList[src];
+        if(nbrs.isEmpty()) {
+            color[src] = 2;
+            return src==dest;
+        }
+        
+        for(int nbr : nbrs) {
+            if(color[nbr]==0) {
+                if(!leadsToDestination(adjList, nbr, dest, color))
+                    return false;
+            } else if(color[nbr]==1)
+                return false;           // cycle exists
+        }
+        
+        color[src] = 2;
+        return true;
+    }
+    
+    private List<Integer>[] getAdjList(int n, int[][] edges) {
         List<Integer>[] adjList = new ArrayList[n];
-        for (int[] edge : edges) {
-            if (adjList[edge[0]] == null) adjList[edge[0]] = new ArrayList<>();
+        
+        for(int i=0 ; i<n ; i++)
+            adjList[i] = new ArrayList<>();
+        
+        for(int[] edge : edges) {
             adjList[edge[0]].add(edge[1]);
         }
-        return dfs(source, destination, adjList, new boolean[n], new boolean[n]);
-    }
-
-    private boolean dfs(int source, int dest, List<Integer>[] adjList, boolean[] visiting, boolean[] visited) {
-        if (adjList[source] == null) return source == dest;
-
-        if (visited[source]) return true;
-        if (visiting[source]) return false;
-        visiting[source] = true;
-        for (int neighbour : adjList[source])
-            if (!dfs(neighbour, dest, adjList, visiting, visited)) return false;
-        visiting[source] = false;
-        visited[source] = true;
-        return true;
+        return adjList;
     }
 }
