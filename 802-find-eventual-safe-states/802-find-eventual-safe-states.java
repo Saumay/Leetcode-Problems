@@ -92,20 +92,58 @@ class Solution {
 //     }
     
     
-    // 3) Use color array to mark visited and visiting nodes.
+    // 3.1) Use color array to mark visited and visiting nodes (Mark color first and then call dfs)
+    // 0(white) -> node is not visited
+    // 1(grey) -> node is part of a cycle
+    // 2(black) -> node is safe
+//     public List<Integer> eventualSafeNodes(int[][] graph) {
+//         int n = graph.length;
+//         int[] color = new int[n];
+//         List<Integer> safeNodes = new LinkedList<>();
+        
+//         for(int i=0 ; i<n ; i++) {
+//             if(color[i]==0) {
+//                 color[i] = 1;
+//                 if(!hasCycleDfs(graph, i, color))
+//                     color[i] = 2;
+//             }
+            
+//             if(color[i]==2) {
+//                 safeNodes.add(i);
+//             }
+//         }
+//         return safeNodes;
+//     }
+    
+//     private boolean hasCycleDfs(int[][] graph, int src, int[] color) {
+//         int[] nbrs = graph[src];
+        
+//         for(int nbr : nbrs) {
+//             if(color[nbr]==0) {
+//                 color[nbr] = 1;
+//                 if(hasCycleDfs(graph, nbr, color))
+//                     return true;
+//                 color[nbr] = 2;
+//             } else if(color[nbr]==1)
+//                 return true;
+//         }
+//         return false;
+//     }
+    
+    
+    // 3.2) Use color array to mark visited and visiting nodes (Call dfs first and then mark node)
     // 0(white) -> node is not visited
     // 1(grey) -> node is part of a cycle
     // 2(black) -> node is safe
     public List<Integer> eventualSafeNodes(int[][] graph) {
         int n = graph.length;
-        int[] color = new int[n];
         List<Integer> safeNodes = new LinkedList<>();
+        
+        int[] color = new int[n];
         
         for(int i=0 ; i<n ; i++) {
             if(color[i]==0) {
-                color[i] = 1;
-                if(!hasCycleDfs(graph, i, color))
-                    color[i] = 2;
+                hasCycleDfs(graph, i, color);
             }
             
             if(color[i]==2) {
@@ -116,17 +154,18 @@ class Solution {
     }
     
     private boolean hasCycleDfs(int[][] graph, int src, int[] color) {
-        int[] nbrs = graph[src];
+        color[src] = 1;
         
+        int[] nbrs = graph[src];
         for(int nbr : nbrs) {
-            if(color[nbr]==0) {
-                color[nbr] = 1;
-                if(hasCycleDfs(graph, nbr, color))
+            if(color[nbr] == 0) {
+                if(hasCycleDfs(graph, nbr, color)) 
                     return true;
-                color[nbr] = 2;
             } else if(color[nbr]==1)
                 return true;
         }
+        color[src] = 2;
+        
         return false;
     }
 }
