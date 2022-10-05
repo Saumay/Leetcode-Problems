@@ -103,37 +103,74 @@ class Solution {
 //     }
     
     
-    // 3) Combined DFS
+    // 3.1) Single DFS traversal: Check if cycle present + Get the longest path present using DP
+    // Returning value from dp array
+//     public int minimumSemesters(int n, int[][] relations) {
+//         List<Integer>[] adjList = getAdjList(n, relations);
+//         int[] color = new int[n+1];
+//         int longestPath = 1;
+        
+//         for(int i=1 ; i<=n ; i++) {
+//             int pathLen = getLongestPathCombinedDfs(adjList, i, color);
+//             if(pathLen==-1)
+//                 return -1;
+//             longestPath = Math.max(pathLen, longestPath);
+//         }
+//         return longestPath;
+//     }
+    
+//     private int getLongestPathCombinedDfs(List<Integer>[] adjList, int src, int[] color) {
+//         if(color[src]!=0)
+//             return color[src];
+        
+//         color[src] = -1;
+        
+//         int longestPath = 1;
+//         List<Integer> nbrs = adjList[src];
+//         for(int nbr : nbrs) {
+//             int pathLen = getLongestPathCombinedDfs(adjList, nbr, color);
+//             if(pathLen==-1)
+//                 return -1;
+//             longestPath = Math.max(pathLen+1, longestPath);
+//         }
+        
+//         color[src] = longestPath;
+//         return longestPath;
+//     }
+    
+    
+    // 3.2) Single DFS traversal: Check if cycle present + Get the longest path present using DP
+    // Returning value from dp array
     public int minimumSemesters(int n, int[][] relations) {
         List<Integer>[] adjList = getAdjList(n, relations);
         int[] color = new int[n+1];
         int longestPath = 1;
         
         for(int i=1 ; i<=n ; i++) {
-            int pathLen = getLongestPathCombinedDfs(adjList, i, color);
-            if(pathLen==-1)
+            if(color[i]==-1)
                 return -1;
-            longestPath = Math.max(pathLen, longestPath);
+            else if(color[i]==0)
+                longestPath = Math.max(longestPath, getLongestPathCombinedDfs(adjList, i, color));
+            else
+                longestPath = Math.max(longestPath, color[i]);            
         }
         return longestPath;
     }
     
     private int getLongestPathCombinedDfs(List<Integer>[] adjList, int src, int[] color) {
-        if(color[src]!=0)
-            return color[src];
-        
         color[src] = -1;
         
         int longestPath = 1;
-        List<Integer> nbrs = adjList[src];
-        for(int nbr : nbrs) {
-            int pathLen = getLongestPathCombinedDfs(adjList, nbr, color);
-            if(pathLen==-1)
+        for(int nbr : adjList[src]) {
+            if(color[nbr]==-1)
                 return -1;
-            longestPath = Math.max(pathLen+1, longestPath);
+            else if(color[nbr]==0)
+                longestPath = Math.max(longestPath, getLongestPathCombinedDfs(adjList, nbr, color)+1);
+            else
+                longestPath = Math.max(longestPath, color[nbr]+1);
         }
-        
         color[src] = longestPath;
+        
         return longestPath;
     }
     
