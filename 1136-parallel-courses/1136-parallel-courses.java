@@ -107,14 +107,13 @@ class Solution {
     public int minimumSemesters(int n, int[][] relations) {
         List<Integer>[] adjList = getAdjList(n, relations);
         int[] color = new int[n+1];
+        int longestPath = 1;
         
-        int longestPath = -1;
         for(int i=1 ; i<=n ; i++) {
             int pathLen = getLongestPathCombinedDfs(adjList, i, color);
-
-            if(pathLen == -1)
+            if(pathLen==-1)
                 return -1;
-            longestPath = Math.max(longestPath, pathLen);
+            longestPath = Math.max(pathLen, longestPath);
         }
         return longestPath;
     }
@@ -122,16 +121,16 @@ class Solution {
     private int getLongestPathCombinedDfs(List<Integer>[] adjList, int src, int[] color) {
         if(color[src]!=0)
             return color[src];
-            
+        
         color[src] = -1;
         
-        List<Integer> nbrs = adjList[src];
         int longestPath = 1;
+        List<Integer> nbrs = adjList[src];
         for(int nbr : nbrs) {
             int pathLen = getLongestPathCombinedDfs(adjList, nbr, color);
             if(pathLen==-1)
                 return -1;
-            longestPath = Math.max(longestPath, pathLen+1);
+            longestPath = Math.max(pathLen+1, longestPath);
         }
         
         color[src] = longestPath;
