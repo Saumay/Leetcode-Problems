@@ -49,56 +49,94 @@ class Solution {
 //     }
     
     
-    // 2) DFS: Check if cycle present + Get the longest path present using DP    
+    // 2) 2 DFS traversals: Check if cycle present + Get the longest path present using DP    
+//     public int minimumSemesters(int n, int[][] relations) {
+//         List<Integer>[] adjList = getAdjList(n, relations);
+//         int[] color = new int[n+1];
+        
+//         for(int i=1 ; i<=n ; i++) {
+//             if(color[i]==0) {
+//                 if(cycleExistsDfs(adjList, i, color))
+//                     return -1;
+//             }
+//         }
+        
+//         int longestPath = 0;
+//         int[] pathLen = new int[n+1];
+//         for(int i=1 ; i<=n ; i++) {
+//             if(pathLen[i]==0)
+//                 longestPath = Math.max(longestPath, getLongestPath(adjList, i, pathLen));
+//         }
+//         return longestPath;
+//     }
+    
+//     private boolean cycleExistsDfs(List<Integer>[] adjList, int src, int[] color) {
+//         color[src] = 1;
+        
+//         List<Integer> nbrs = adjList[src];
+//         for(int nbr : nbrs) {
+//             if(color[nbr]==0) {
+//                 if(cycleExistsDfs(adjList, nbr, color))
+//                     return true;
+//             } else if(color[nbr]==1) {
+//                 return true;
+//             }
+//         }
+        
+//         color[src] = 2;
+//         return false;
+//     }
+    
+//     private int getLongestPath(List<Integer>[] adjList, int src, int[] pathLen) {
+//         if(pathLen[src]>1)
+//             return pathLen[src];
+        
+//         List<Integer> nbrs = adjList[src];
+        
+//         int longestPath = 1;
+//         for(int nbr : nbrs) {
+//             longestPath = Math.max(longestPath, getLongestPath(adjList, nbr, pathLen)+1);
+//         }
+//         pathLen[src] = longestPath;
+        
+//         return longestPath;
+//     }
+    
+    
+    // 3) Combined DFS
     public int minimumSemesters(int n, int[][] relations) {
         List<Integer>[] adjList = getAdjList(n, relations);
         int[] color = new int[n+1];
         
+        int longestPath = -1;
         for(int i=1 ; i<=n ; i++) {
-            if(color[i]==0) {
-                if(cycleExistsDfs(adjList, i, color))
+            // if(color[i]==0) {
+                int pathLen = getLongestPathCombinedDfs(adjList, i, color);
+                if(pathLen != -1)
+                    longestPath = Math.max(longestPath, pathLen);
+                else
                     return -1;
-            }
-        }
-        
-        int longestPath = 0;
-        int[] pathLen = new int[n+1];
-        for(int i=1 ; i<=n ; i++) {
-            if(pathLen[i]==0)
-                longestPath = Math.max(longestPath, getLongestPath(adjList, i, pathLen));
+            // }
         }
         return longestPath;
     }
     
-    private boolean cycleExistsDfs(List<Integer>[] adjList, int src, int[] color) {
-        color[src] = 1;
+    private int getLongestPathCombinedDfs(List<Integer>[] adjList, int src, int[] color) {
+        if(color[src]!=0)
+            return color[src];
+            
+        color[src] = -1;
         
         List<Integer> nbrs = adjList[src];
-        for(int nbr : nbrs) {
-            if(color[nbr]==0) {
-                if(cycleExistsDfs(adjList, nbr, color))
-                    return true;
-            } else if(color[nbr]==1) {
-                return true;
-            }
-        }
-        
-        color[src] = 2;
-        return false;
-    }
-    
-    private int getLongestPath(List<Integer>[] adjList, int src, int[] pathLen) {
-        if(pathLen[src]>1)
-            return pathLen[src];
-        
-        List<Integer> nbrs = adjList[src];
-        
         int longestPath = 1;
         for(int nbr : nbrs) {
-            longestPath = Math.max(longestPath, getLongestPath(adjList, nbr, pathLen)+1);
+            int pathLen = getLongestPathCombinedDfs(adjList, nbr, color);
+            if(pathLen==-1)
+                return -1;
+            longestPath = Math.max(longestPath, pathLen+1);
         }
-        pathLen[src] = longestPath;
         
+        color[src] = longestPath;
         return longestPath;
     }
     
