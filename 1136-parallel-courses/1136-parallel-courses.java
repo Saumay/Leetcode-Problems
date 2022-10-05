@@ -88,14 +88,14 @@ class Solution {
     }
     
     private int getLongestPath(List<Integer>[] adjList, int src, int[] pathLen) {
+        if(pathLen[src]>1)
+            return pathLen[src];
+        
         List<Integer> nbrs = adjList[src];
         
         int longestPath = 1;
         for(int nbr : nbrs) {
-            if(pathLen[nbr] > 0)
-                longestPath = Math.max(longestPath, pathLen[nbr]+1);
-            else
-                longestPath = Math.max(longestPath, getLongestPath(adjList, nbr, pathLen)+1);
+            longestPath = Math.max(longestPath, getLongestPath(adjList, nbr, pathLen)+1);
         }
         pathLen[src] = longestPath;
         
