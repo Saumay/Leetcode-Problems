@@ -146,9 +146,9 @@ class Solution {
         for(int i=1 ; i<=n ; i++)
             adjList[i] = new ArrayList<>();
         
-        for(int[] relation : relations) {
+        for(int[] relation : relations)
             adjList[relation[0]].add(relation[1]);
-        }
+
         return adjList;
     }
 }
