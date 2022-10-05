@@ -110,13 +110,11 @@ class Solution {
         
         int longestPath = -1;
         for(int i=1 ; i<=n ; i++) {
-            // if(color[i]==0) {
-                int pathLen = getLongestPathCombinedDfs(adjList, i, color);
-                if(pathLen != -1)
-                    longestPath = Math.max(longestPath, pathLen);
-                else
-                    return -1;
-            // }
+            int pathLen = getLongestPathCombinedDfs(adjList, i, color);
+
+            if(pathLen == -1)
+                return -1;
+            longestPath = Math.max(longestPath, pathLen);
         }
         return longestPath;
     }
