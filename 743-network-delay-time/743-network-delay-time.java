@@ -66,9 +66,9 @@ class Solution {
         int[] dist = new int[n+1];        
         List<int[]>[] adjList = getAdjAndDistList(times, n, dist);
         
-        for(int i=1 ; i<=n ; i++) {
-            Collections.sort(adjList[i], (i1,i2) -> i1[1]-i2[1]);
-        }
+        // for(int i=1 ; i<=n ; i++) {
+        //     Collections.sort(adjList[i], (i1,i2) -> i1[1]-i2[1]);
+        // }
         
         Queue<int[]> q = new ArrayDeque<>();
         q.add(new int[] {k,0});
