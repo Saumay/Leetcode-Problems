@@ -59,6 +59,9 @@ class Solution {
             int curI = cur[0];
             int curJ = cur[1];
             
+            if(curI==m-1 && curJ==n-1)
+                return cur[2];
+            
             for(int[] dir : dirs) {
                 int nbrI = cur[0] + dir[0];
                 int nbrJ = cur[1] + dir[1];
