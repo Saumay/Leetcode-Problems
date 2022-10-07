@@ -66,22 +66,19 @@ class Solution {
         int[] dist = new int[n+1];        
         List<int[]>[] adjList = getAdjAndDistList(times, n, dist);
         
-        // for(int i=1 ; i<=n ; i++) {
-        //     Collections.sort(adjList[i], (i1,i2) -> i1[1]-i2[1]);
-        // }
-        
-        Queue<int[]> q = new ArrayDeque<>();
-        q.add(new int[] {k,0});
+        Queue<Integer> q = new ArrayDeque<>();
+        q.add(k);
         dist[k] = 0;
-        
         while(!q.isEmpty()) {
-            int[] cur = q.remove();
+            int cur = q.remove();
             
-            List<int[]> nbrs = adjList[cur[0]];
+            List<int[]> nbrs = adjList[cur];
             for(int[] nbr : nbrs) {
-                if(dist[cur[0]] + nbr[1] < dist[nbr[0]]) {
-                    dist[nbr[0]] = dist[cur[0]] + nbr[1];
-                    q.add(new int[] {nbr[0], dist[nbr[0]]});
+                int nbrId = nbr[0];
+                int nbrTime = dist[cur] + nbr[1];
+                if(nbrTime < dist[nbrId]) {
+                    dist[nbrId] = nbrTime;
+                    q.add(nbrId);
                 }
             }
         }
