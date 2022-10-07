@@ -59,6 +59,7 @@ class Solution {
             int curI = cur[0];
             int curJ = cur[1];
             
+            // Cirtical: If destination is polled from the queue, we know that there can't be any better path to reach than what we currently have
             if(curI==m-1 && curJ==n-1)
                 return cur[2];
             
