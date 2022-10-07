@@ -62,62 +62,64 @@ class Solution {
     
     
     // 3) Using BFS + Distance Array
-    public int networkDelayTime(int[][] times, int n, int k) {
-        int[] dist = new int[n+1];        
-        List<int[]>[] adjList = getAdjAndDistList(times, n, dist);
-        
-        Queue<Integer> q = new ArrayDeque<>();
-        q.add(k);
-        dist[k] = 0;
-        while(!q.isEmpty()) {
-            int cur = q.remove();
-            
-            List<int[]> nbrs = adjList[cur];
-            for(int[] nbr : nbrs) {
-                int nbrId = nbr[0];
-                int nbrTime = dist[cur] + nbr[1];
-                if(nbrTime < dist[nbrId]) {
-                    dist[nbrId] = nbrTime;
-                    q.add(nbrId);
-                }
-            }
-        }
-        
-        Integer max = Integer.MIN_VALUE;
-        for(int i=1 ; i<=n ; i++) {
-            max = Math.max(max, dist[i]);
-        }
-        return max==Integer.MAX_VALUE ? -1 : max;
-    }
-    
-    
-    // 2) Djikstra Algorithm: Using Priority Queue
 //     public int networkDelayTime(int[][] times, int n, int k) {
-//         int[] dist = new int[n+1];
+//         int[] dist = new int[n+1];        
 //         List<int[]>[] adjList = getAdjAndDistList(times, n, dist);
         
-//         PriorityQueue<int[]> pq = new PriorityQueue<>((i1,i2) -> i1[1]-i2[1]);
-//         pq.add(new int[] {k,0});
+//         Queue<Integer> q = new ArrayDeque<>();
+//         q.add(k);
 //         dist[k] = 0;
-        
-//         while(!pq.isEmpty()) {
-//             int[] cur = pq.poll();
+//         while(!q.isEmpty()) {
+//             int cur = q.remove();
             
-//             List<int[]> nbrs = adjList[cur[0]];
+//             List<int[]> nbrs = adjList[cur];
 //             for(int[] nbr : nbrs) {
-//                 if(dist[cur[0]] + nbr[1] < dist[nbr[0]]) {
-//                     dist[nbr[0]] = dist[cur[0]] + nbr[1];
-//                     pq.offer(new int[] {nbr[0], dist[nbr[0]]});
+//                 int nbrId = nbr[0];
+//                 int nbrTime = dist[cur] + nbr[1];
+//                 if(nbrTime < dist[nbrId]) {
+//                     dist[nbrId] = nbrTime;
+//                     q.add(nbrId);
 //                 }
 //             }
 //         }
         
-//         int max = Integer.MIN_VALUE;
+//         Integer max = Integer.MIN_VALUE;
 //         for(int i=1 ; i<=n ; i++) {
 //             max = Math.max(max, dist[i]);
 //         }
 //         return max==Integer.MAX_VALUE ? -1 : max;
 //     }
+    
+    
+    // 2) Djikstra Algorithm: Using Priority Queue
+    public int networkDelayTime(int[][] times, int n, int k) {
+        int[] dist = new int[n+1];
+        List<int[]>[] adjList = getAdjAndDistList(times, n, dist);
+        
+        PriorityQueue<int[]> pq = new PriorityQueue<>((i1,i2) -> i1[1]-i2[1]);
+        pq.add(new int[] {k,0});
+        dist[k] = 0;
+        
+        while(!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            
+            List<int[]> nbrs = adjList[cur[0]];
+            for(int[] nbr : nbrs) {
+                int nbrTime = cur[1] + nbr[1];
+                int nbrId = nbr[0];
+                if(nbrTime < dist[nbrId]) {
+                    dist[nbrId] = nbrTime;
+                    pq.offer(new int[] {nbrId, dist[nbrId]});
+                }
+            }
+        }
+        
+        int max = Integer.MIN_VALUE;
+        for(int i=1 ; i<=n ; i++) {
+            max = Math.max(max, dist[i]);
+        }
+        return max==Integer.MAX_VALUE ? -1 : max;
+    }
     
     private List<int[]>[] getAdjAndDistList(int[][] times, int n, int[] dist) {
         List<int[]>[] adjList = new ArrayList[n+1];
