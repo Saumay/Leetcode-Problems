@@ -1,9 +1,42 @@
 class Solution {
     
-    // 1) Using DFS with sorted edges + distance array
+    // 1) Using DFS + distance array
+//     public int networkDelayTime(int[][] times, int n, int k) {
+//         int[] dist = new int[n+1];
+//         List<int[]>[] adjList = getAdjAndDistList(times, n, dist);
+        
+//         dist[k] = 0;
+//         dfs(adjList, k, 0, dist);
+        
+//         int maxTime = Integer.MIN_VALUE;
+//         for(int i=1 ; i<=n ; i++)
+//             maxTime = Math.max(maxTime, dist[i]);
+        
+//         return maxTime==Integer.MAX_VALUE ? -1 : maxTime;
+//     }
+    
+//     private void dfs(List<int[]>[] adjList, int src, int time, int[] dist) {
+//         List<int[]> nbrs = adjList[src];
+//         for(int[] nbr : nbrs) {
+//             int nbrId = nbr[0];
+//             int nbrTime = time+nbr[1];
+//             if(nbrTime < dist[nbrId]) {
+//                 dist[nbrId] = nbrTime;
+//                 dfs(adjList, nbrId, nbrTime, dist);
+//             }
+//         }
+//     }
+    
+    
+    // 2) Using DFS + weight sorted edges + distance array
     public int networkDelayTime(int[][] times, int n, int k) {
         int[] dist = new int[n+1];
         List<int[]>[] adjList = getAdjAndDistList(times, n, dist);
+        
+        // Sorting edges to enable greedy approach
+        for(int i=1 ; i<=n ; i++) {
+            Collections.sort(adjList[i], (i1,i2) -> i1[1]-i2[1]);
+        }
         
         dist[k] = 0;
         dfs(adjList, k, 0, dist);
