@@ -1,5 +1,33 @@
 class Solution {
     
+    // 1) Using DFS with sorted edges + distance array
+    public int networkDelayTime(int[][] times, int n, int k) {
+        int[] dist = new int[n+1];
+        List<int[]>[] adjList = getAdjAndDistList(times, n, dist);
+        
+        dist[k] = 0;
+        dfs(adjList, k, 0, dist);
+        
+        int maxTime = Integer.MIN_VALUE;
+        for(int i=1 ; i<=n ; i++)
+            maxTime = Math.max(maxTime, dist[i]);
+        
+        return maxTime==Integer.MAX_VALUE ? -1 : maxTime;
+    }
+    
+    private void dfs(List<int[]>[] adjList, int src, int time, int[] dist) {
+        List<int[]> nbrs = adjList[src];
+        for(int[] nbr : nbrs) {
+            int nbrId = nbr[0];
+            int nbrTime = time+nbr[1];
+            if(nbrTime < dist[nbrId]) {
+                dist[nbrId] = nbrTime;
+                dfs(adjList, nbrId, nbrTime, dist);
+            }
+        }
+    }
+    
+    
     // 1) Djikstra Algorithm: Using Queue
 //     public int networkDelayTime(int[][] times, int n, int k) {
 //         int[] dist = new int[n+1];        
@@ -30,34 +58,34 @@ class Solution {
     
     
     // 2) Djikstra Algorithm: Using Priority Queue
-    public int networkDelayTime(int[][] times, int n, int k) {
-        int[] dist = new int[n+1];
-        List<int[]>[] adjList = getAdjList(times, n, dist);
+//     public int networkDelayTime(int[][] times, int n, int k) {
+//         int[] dist = new int[n+1];
+//         List<int[]>[] adjList = getAdjList(times, n, dist);
         
-        PriorityQueue<int[]> pq = new PriorityQueue<>((i1,i2) -> i1[1]-i2[1]);
-        pq.add(new int[] {k,0});
-        dist[k] = 0;
+//         PriorityQueue<int[]> pq = new PriorityQueue<>((i1,i2) -> i1[1]-i2[1]);
+//         pq.add(new int[] {k,0});
+//         dist[k] = 0;
         
-        while(!pq.isEmpty()) {
-            int[] cur = pq.poll();
+//         while(!pq.isEmpty()) {
+//             int[] cur = pq.poll();
             
-            List<int[]> nbrs = adjList[cur[0]];
-            for(int[] nbr : nbrs) {
-                if(dist[cur[0]] + nbr[1] < dist[nbr[0]]) {
-                    dist[nbr[0]] = dist[cur[0]] + nbr[1];
-                    pq.offer(new int[] {nbr[0], dist[nbr[0]]});
-                }
-            }
-        }
+//             List<int[]> nbrs = adjList[cur[0]];
+//             for(int[] nbr : nbrs) {
+//                 if(dist[cur[0]] + nbr[1] < dist[nbr[0]]) {
+//                     dist[nbr[0]] = dist[cur[0]] + nbr[1];
+//                     pq.offer(new int[] {nbr[0], dist[nbr[0]]});
+//                 }
+//             }
+//         }
         
-        int max = Integer.MIN_VALUE;
-        for(int i=1 ; i<=n ; i++) {
-            max = Math.max(max, dist[i]);
-        }
-        return max==Integer.MAX_VALUE ? -1 : max;
-    }
+//         int max = Integer.MIN_VALUE;
+//         for(int i=1 ; i<=n ; i++) {
+//             max = Math.max(max, dist[i]);
+//         }
+//         return max==Integer.MAX_VALUE ? -1 : max;
+//     }
     
-    private List<int[]>[] getAdjList(int[][] times, int n, int[] dist) {
+    private List<int[]>[] getAdjAndDistList(int[][] times, int n, int[] dist) {
         List<int[]>[] adjList = new ArrayList[n+1];
         
         for(int i=1 ; i<=n ; i++) {
