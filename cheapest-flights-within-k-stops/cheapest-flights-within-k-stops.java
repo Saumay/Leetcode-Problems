@@ -61,9 +61,11 @@ class Solution {
         }
         
         prev[src] = 0;
+        
         int atMostEdges = 0;
         while(atMostEdges <= k) {
-
+            atMostEdges++;
+            
             for(int[] flight : flights) {
                 int source = flight[0];
                 int nbr = flight[1];
@@ -73,7 +75,6 @@ class Solution {
                     cur[nbr] = Math.min(cur[nbr], prev[source]+cost);
                 }
             }
-            atMostEdges++;
             prev = cur.clone();
         }
         return prev[dst]==Integer.MAX_VALUE ? -1 : prev[dst];
