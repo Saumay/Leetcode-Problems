@@ -105,8 +105,7 @@ class Solution {
 
             List<int[]> nbrs = adjList[dest];
             for(int[] nbr : nbrs) {
-                if(!mstSet.contains(nbr[0]))
-                    pq.add(nbr);
+                pq.add(nbr);
             }
         }
         return totalCost;
