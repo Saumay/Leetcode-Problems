@@ -104,9 +104,8 @@ class Solution {
             mstSet.add(nextId);
             
             List<int[]> nbrs = adjList[nextId];
-            for(int[] nbrEdge : nbrs) {   
+            for(int[] nbrEdge : nbrs)  
                 pq.add(nbrEdge);
-            }
             
             totalCost += cost;
         }
