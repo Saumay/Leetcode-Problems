@@ -2,10 +2,10 @@ class Solution {
     
     // 1) BFS upto k stops
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
-        int[] dist = new int[n];
-        List<int[]>[] adjList = getAdjListAndDist(n, flights, dist);
+        List<int[]>[] adjList = getAdjList(n, flights);
         
-        // Arrays.fill(dist, Integer.MAX_VALUE);
+        int[] dist = new int[n];
+        Arrays.fill(dist, Integer.MAX_VALUE);
         dist[src] = 0;
         
         Queue<int[]> q = new ArrayDeque<>();
@@ -77,13 +77,11 @@ class Solution {
 //         return -1;
 //     }
     
-    private List<int[]>[] getAdjListAndDist(int n, int[][] flights, int[] dist) {
+    private List<int[]>[] getAdjList(int n, int[][] flights) {
         List<int[]>[] adjList = new ArrayList[n];
         
-        for(int i=0 ; i<n ; i++)  {
+        for(int i=0 ; i<n ; i++) 
             adjList[i] = new ArrayList<>();
-            dist[i] = Integer.MAX_VALUE;
-        }
         
         for(int[] flight : flights)
             adjList[flight[0]].add(new int[] {flight[1], flight[2]});
