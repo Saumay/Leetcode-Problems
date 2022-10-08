@@ -97,14 +97,16 @@ class Solution {
             int dest = cur[0];
             int cost = cur[1];
             
-            if(!mstSet.contains(dest)) {
-                mstSet.add(dest);
-                totalCost += cost;
-                
-                List<int[]> nbrs = adjList[dest];
-                for(int[] nbr : nbrs) {
+            if(mstSet.contains(dest))
+                continue;
+            
+            mstSet.add(dest);
+            totalCost += cost;
+
+            List<int[]> nbrs = adjList[dest];
+            for(int[] nbr : nbrs) {
+                if(!mstSet.contains(nbr[0]))
                     pq.add(nbr);
-                }
             }
         }
         return totalCost;
