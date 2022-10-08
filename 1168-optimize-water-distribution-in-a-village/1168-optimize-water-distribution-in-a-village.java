@@ -83,31 +83,29 @@ class Solution {
     // 2) Minimum Spanning Tree: Prim's Algorithm
     public int minCostToSupplyWater(int n, int[] wells, int[][] pipes) {
         // Build edges list
-        List<int[]>[] adjList = getAdjList(n, wells, pipes); 
+        List<int[]>[] adjList = getAdjList(n, wells, pipes);
         
         Set<Integer> mstSet = new HashSet<>();
         mstSet.add(0);
         
         PriorityQueue<int[]> pq = new PriorityQueue<>((e1,e2) -> e1[1]-e2[1]);
-        for(int i=0 ; i<n ; i++) {
-            pq.add(new int[] {i+1, wells[i]});
-        }
+        pq.addAll(adjList[0]);
         
         int totalCost = 0;
         while(!pq.isEmpty() && mstSet.size()<=n) {
             int[] cur = pq.poll();
-            int nextId = cur[0];
+            int dest = cur[0];
             int cost = cur[1];
             
-            if(mstSet.contains(nextId))
-                continue;
-            mstSet.add(nextId);
-            
-            List<int[]> nbrs = adjList[nextId];
-            for(int[] nbrEdge : nbrs)  
-                pq.add(nbrEdge);
-            
-            totalCost += cost;
+            if(!mstSet.contains(dest)) {
+                mstSet.add(dest);
+                totalCost += cost;
+                
+                List<int[]> nbrs = adjList[dest];
+                for(int[] nbr : nbrs) {
+                    pq.add(nbr);
+                }
+            }
         }
         return totalCost;
     }
