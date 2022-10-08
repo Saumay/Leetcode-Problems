@@ -92,50 +92,79 @@ class Solution {
     
     
     // 4) Djikstra Algorithm: Using Priority Queue
+//     public int networkDelayTime(int[][] times, int n, int k) {
+//         int[] dist = new int[n+1];
+//         List<int[]>[] adjList = getAdjAndDistList(times, n, dist);
+        
+//         PriorityQueue<int[]> pq = new PriorityQueue<>((i1,i2) -> i1[1]-i2[1]);
+//         pq.add(new int[] {k,0});
+//         dist[k] = 0;
+        
+//         while(!pq.isEmpty()) {
+//             int[] cur = pq.poll();
+            
+//             List<int[]> nbrs = adjList[cur[0]];
+//             for(int[] nbr : nbrs) {
+//                 int nbrTime = cur[1] + nbr[1];
+//                 int nbrId = nbr[0];
+//                 if(nbrTime < dist[nbrId]) {
+//                     dist[nbrId] = nbrTime;
+//                     pq.offer(new int[] {nbrId, dist[nbrId]});
+//                 }
+//             }
+//         }
+        
+//         int max = Integer.MIN_VALUE;
+//         for(int i=1 ; i<=n ; i++) {
+//             max = Math.max(max, dist[i]);
+//         }
+//         return max==Integer.MAX_VALUE ? -1 : max;
+//     }
+    
+//     private List<int[]>[] getAdjAndDistList(int[][] times, int n, int[] dist) {
+//         List<int[]>[] adjList = new ArrayList[n+1];
+        
+//         for(int i=1 ; i<=n ; i++) {
+//             adjList[i] = new ArrayList<>();
+//             dist[i] = Integer.MAX_VALUE;
+//         }
+        
+//         for(int[] time : times) {
+//             int src = time[0];
+//             int dest = time[1];
+//             int wt = time[2];
+            
+//             adjList[src].add(new int[]{dest, wt});
+//         }
+//         return adjList;
+//     }
+    
+    
+    // 5) Bellman Ford's Algorithm
     public int networkDelayTime(int[][] times, int n, int k) {
         int[] dist = new int[n+1];
-        List<int[]>[] adjList = getAdjAndDistList(times, n, dist);
         
-        PriorityQueue<int[]> pq = new PriorityQueue<>((i1,i2) -> i1[1]-i2[1]);
-        pq.add(new int[] {k,0});
+        Arrays.fill(dist, Integer.MAX_VALUE);
         dist[k] = 0;
         
-        while(!pq.isEmpty()) {
-            int[] cur = pq.poll();
+        int edges = 0;
+        while(edges < n-1) {
             
-            List<int[]> nbrs = adjList[cur[0]];
-            for(int[] nbr : nbrs) {
-                int nbrTime = cur[1] + nbr[1];
-                int nbrId = nbr[0];
-                if(nbrTime < dist[nbrId]) {
-                    dist[nbrId] = nbrTime;
-                    pq.offer(new int[] {nbrId, dist[nbrId]});
-                }
+            for(int[] time : times) {
+                int src = time[0];
+                int nbr = time[1];
+                int cost = time[2];
+                
+                if(dist[src] != Integer.MAX_VALUE)
+                    dist[nbr] = Math.min(dist[nbr], dist[src] + cost);
             }
+            edges++;
         }
         
         int max = Integer.MIN_VALUE;
-        for(int i=1 ; i<=n ; i++) {
+        for(int i=1 ; i<=n ; i++)
             max = Math.max(max, dist[i]);
-        }
+        
         return max==Integer.MAX_VALUE ? -1 : max;
-    }
-    
-    private List<int[]>[] getAdjAndDistList(int[][] times, int n, int[] dist) {
-        List<int[]>[] adjList = new ArrayList[n+1];
-        
-        for(int i=1 ; i<=n ; i++) {
-            adjList[i] = new ArrayList<>();
-            dist[i] = Integer.MAX_VALUE;
-        }
-        
-        for(int[] time : times) {
-            int src = time[0];
-            int dest = time[1];
-            int wt = time[2];
-            
-            adjList[src].add(new int[]{dest, wt});
-        }
-        return adjList;
     }
 }
