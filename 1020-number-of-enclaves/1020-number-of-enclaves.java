@@ -82,7 +82,7 @@ class Solution {
     }
     
     private void dfs(int[][] grid, int i, int j, boolean[][] vis) {
-        if(grid[i][j]==0 || vis[i][j])
+        if(vis[i][j])
             return;
         
         vis[i][j] = true;
