@@ -27,10 +27,8 @@ class Solution {
                 color[nbr] = nextColor;
                 if(!isBipartiteDfs(graph, nbr, color))
                     return false;
-            } else {
-                if(curColor == color[nbr])
-                    return false;
-            }
+            } else if(curColor == color[nbr])
+                return false;
         }
         return true;
     }
