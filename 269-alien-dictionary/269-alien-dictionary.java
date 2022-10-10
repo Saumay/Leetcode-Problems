@@ -4,7 +4,6 @@ class Solution {
     public String alienOrder(String[] words) {
         // Create adjacency Map
         Map<Character, List<Character>> adjMap = new HashMap<>();
-        Map<Character, Integer> indegreeMap = new HashMap<>();
         Map<Character, Integer> seen = new HashMap<>();
         StringBuilder sorted = new StringBuilder();
         
@@ -12,7 +11,6 @@ class Solution {
             for(int i=0 ; i<word.length() ; i++) {
                 char ch = word.charAt(i);
                 adjMap.put(ch, new LinkedList<>());
-                indegreeMap.put(ch, 0);
                 seen.put(ch, 0);
             }
         }
@@ -30,7 +28,6 @@ class Solution {
                 
                 if(ch1 != ch2) {
                     adjMap.get(ch1).add(ch2);
-                    indegreeMap.put(ch2, indegreeMap.get(ch2)+1);
                     break;
                 }
             }
