@@ -18,12 +18,11 @@ class Solution {
     private boolean isBipartiteDfs(int[][] graph, int src, int[] color) {
         int[] nbrs = graph[src];
         int curColor = color[src];
+        int nextColor = curColor==1 ? -1 : 1;
         
         for(int nbr : nbrs) {
-            
             // No need to check trivial cycles since for caller node color[nbr]==curColor will always be false
             if(color[nbr]==0) {
-                int nextColor = curColor==1 ? -1 : 1;
                 color[nbr] = nextColor;
                 if(!isBipartiteDfs(graph, nbr, color))
                     return false;
