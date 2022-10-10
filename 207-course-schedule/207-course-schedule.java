@@ -38,8 +38,8 @@ class Solution {
         for(int i=0 ; i<numCourses ; i++) {
             if(color[i]==0 && cycleExistsDfs1(adjList, i, color))
                 return false;
-            else if(color[i]==0)
-                return false;
+            // else if(color[i]==0)
+            //     return false;
         }
         return true;
     }
