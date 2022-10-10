@@ -1,5 +1,36 @@
-class Trie {
+class Node {
+    private Node[] links;
+    private boolean isEnd;
+    
+    Node() {
+        links = new Node[26];
+        isEnd = false;
+    }
+    
+    public boolean contains(char ch) {
+        return links[ch-'a']!=null;
+    }
+    
+    public void put(char ch, Node node) {
+        links[ch-'a'] = node;
+    }
+    
+    public Node get(char ch) {
+        return links[ch-'a'];
+    }
+    
+    public boolean isEnd() {
+        return isEnd;
+    }
+    
+    public void setEnd() {
+        isEnd = true;
+    }
+}
 
+
+class Trie {
+    
     private Node root;
     
     public Trie() {
@@ -7,51 +38,40 @@ class Trie {
     }
     
     public void insert(String word) {
-        Node cur = root;
+        Node temp = root;
+        
         for(int i=0 ; i<word.length() ; i++) {
             char ch = word.charAt(i);
             
-            if(cur.links[ch-'a']==null)
-                cur.links[ch-'a'] = new Node();
-            
-            cur = cur.links[ch-'a'];
+            if(!temp.contains(ch))
+                temp.put(ch, new Node());
+            temp = temp.get(ch);
         }
-        cur.isEnd = true;
+        temp.setEnd();
+    }
+    
+    private Node getLastNode(String word) {
+        Node temp = root;
+        
+        for(int i=0 ; i<word.length() ; i++) {
+            char ch = word.charAt(i);
+            
+            if(temp.contains(ch))
+                temp = temp.get(ch);
+            else
+                return null;
+        }
+        return temp;
     }
     
     public boolean search(String word) {
-        Node cur = root;
-        for(int i=0 ; i<word.length() ; i++) {
-            char ch = word.charAt(i);
-            
-            if(cur.links[ch-'a']==null)
-                return false;
-            
-            cur = cur.links[ch-'a'];
-        }
-        return cur.isEnd;
+        Node lastNode = getLastNode(word);
+        return lastNode!=null && lastNode.isEnd();
     }
     
     public boolean startsWith(String prefix) {
-        Node cur = root;
-        for(int i=0 ; i<prefix.length() ; i++) {
-            char ch = prefix.charAt(i);
-            
-            if(cur.links[ch-'a']==null)
-                return false;
-            
-            cur = cur.links[ch-'a'];
-        }
-        return true;
-    }
-}
-
-class Node {
-    Node[] links;
-    boolean isEnd;
-    
-    public Node() {
-        links = new Node[26];
+        Node lastNode = getLastNode(prefix);
+        return lastNode!=null;
     }
 }
 
