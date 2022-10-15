@@ -22,48 +22,6 @@ class Codec {
     
     
     // 1) Approach 1: Storing size of children array with parent in DFS order. Using Top Down Recursion
-//     public String serialize(Node root) {
-//         if(root == null)
-//             return "";
-        
-//         StringBuilder sb = new StringBuilder();
-//         serializeHelper(root, sb);
-//         return sb.toString();
-//     }
-    
-//     private void serializeHelper(Node root, StringBuilder sb) {
-//         sb.append(root.val + ",");
-//         sb.append(root.children.size() + ",");
-        
-//         for(Node child : root.children) {
-//             serializeHelper(child, sb);
-//         }
-//     }
-	
-//     // Decodes your encoded data to tree.
-//     public Node deserialize(String data) {
-//         if(data.isEmpty())
-//             return null;
-        
-//         String[] splitted = data.split(",");
-//         return deserializeHelper(splitted, new int[] {0});
-//     }
-    
-//     private Node deserializeHelper(String[] data, int[] index) {
-//         Node node = new Node(Integer.parseInt(data[index[0]]), new ArrayList<>());
-//         index[0]++;
-//         int childrenCount = Integer.parseInt(data[index[0]]);
-//         index[0]++;
-        
-//         for(int i=0 ; i<childrenCount ; i++) {
-//             node.children.add(deserializeHelper(data, index));
-//         }
-        
-//         return node;
-//     }
-    
-    
-    // 2) Approach 2: Adding sentinel in DFS order. Using Top Down Recursion
     public String serialize(Node root) {
         if(root == null)
             return "";
@@ -75,17 +33,15 @@ class Codec {
     
     private void serializeHelper(Node root, StringBuilder sb) {
         sb.append(root.val + ",");
+        sb.append(root.children.size() + ",");
         
-        for(Node child : root.children)
+        for(Node child : root.children) {
             serializeHelper(child, sb);
-        
-        sb.append("#,");
+        }
     }
-    
-        // Decodes your encoded data to tree.
+	
+    // Decodes your encoded data to tree.
     public Node deserialize(String data) {
-        System.out.println(data);
-        
         if(data.isEmpty())
             return null;
         
@@ -93,18 +49,62 @@ class Codec {
         return deserializeHelper(splitted, new int[] {0});
     }
     
-    private Node deserializeHelper(String[] splitted, int[] idx) {
-        Node root = new Node(Integer.parseInt(splitted[idx[0]]), new ArrayList<>());
+    private Node deserializeHelper(String[] data, int[] index) {
+        Node node = new Node(Integer.parseInt(data[index[0]]), new ArrayList<>());
+        index[0]++;
+        int childrenCount = Integer.parseInt(data[index[0]]);
+        index[0]++;
         
-        idx[0]++;
-            
-        while(idx[0]<splitted.length && !splitted[idx[0]].equals("#")) {
-            root.children.add(deserializeHelper(splitted, idx));
+        for(int i=0 ; i<childrenCount ; i++) {
+            node.children.add(deserializeHelper(data, index));
         }
-        idx[0]++;
         
-        return root;
+        return node;
     }
+    
+    
+    // 2) Approach 2: Adding sentinel in DFS order. Using Top Down Recursion
+//     public String serialize(Node root) {
+//         if(root == null)
+//             return "";
+        
+//         StringBuilder sb = new StringBuilder();
+//         serializeHelper(root, sb);
+//         return sb.toString();
+//     }
+    
+//     private void serializeHelper(Node root, StringBuilder sb) {
+//         sb.append(root.val + ",");
+        
+//         for(Node child : root.children)
+//             serializeHelper(child, sb);
+        
+//         sb.append("#,");
+//     }
+    
+//         // Decodes your encoded data to tree.
+//     public Node deserialize(String data) {
+//         System.out.println(data);
+        
+//         if(data.isEmpty())
+//             return null;
+        
+//         String[] splitted = data.split(",");
+//         return deserializeHelper(splitted, new int[] {0});
+//     }
+    
+//     private Node deserializeHelper(String[] splitted, int[] idx) {
+//         Node root = new Node(Integer.parseInt(splitted[idx[0]]), new ArrayList<>());
+        
+//         idx[0]++;
+            
+//         while(idx[0]<splitted.length && !splitted[idx[0]].equals("#")) {
+//             root.children.add(deserializeHelper(splitted, idx));
+//         }
+//         idx[0]++;
+        
+//         return root;
+//     }
     
     
     // 3) Approach 3.1: Using Level Order Traversal and sentinel node after each level
