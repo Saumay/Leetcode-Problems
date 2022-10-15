@@ -66,24 +66,23 @@ class Solution {
         
         while(left<=right && right<s.length()) {
             
-            // if(matchCount < tCount) {
-                char rightCh = s.charAt(right);
-                
-                sMap.put(rightCh, sMap.getOrDefault(rightCh, 0)+1);
-                if(tMap.containsKey(rightCh) && sMap.get(rightCh)<=tMap.get(rightCh))
-                    matchCount++;
-                
-                right++;
-            // }
+            // Expand window
+            char rightCh = s.charAt(right);
+
+            sMap.put(rightCh, sMap.getOrDefault(rightCh, 0)+1);
+            if(tMap.containsKey(rightCh) && sMap.get(rightCh)<=tMap.get(rightCh))
+                matchCount++;
+
+            right++;
                             
             while(matchCount == tCount) {
                 int length = right-left+1;
                 if(length < min[0])
                     min = new int[] {length, left, right};
-                char ch = s.charAt(left);
+                char leftCh = s.charAt(left);
 
-                sMap.put(ch, sMap.get(ch)-1);
-                if(tMap.containsKey(ch) && sMap.get(ch)<tMap.get(ch))
+                sMap.put(leftCh, sMap.get(leftCh)-1);
+                if(tMap.containsKey(leftCh) && sMap.get(leftCh)<tMap.get(leftCh))
                     matchCount--;
                 // if(sMap.get(ch) <= 0)
                 //     sMap.put(ch, 0);
