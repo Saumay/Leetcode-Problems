@@ -56,8 +56,7 @@ class Codec {
         index[0]++;
         
         for(int i=0 ; i<childrenCount ; i++) {
-            // if(index[0] < data.length)
-                node.children.add(deserializeHelper(data, index));
+            node.children.add(deserializeHelper(data, index));
         }
         
         return node;
