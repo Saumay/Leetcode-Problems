@@ -25,43 +25,43 @@ class Solution {
     
     
     // 2) Recursive 2: Sorting + HashSet + By iterating over all the elements starting from idx till end in the method.
-    public List<List<Integer>> subsetsWithDup(int[] nums) {
-        Set<List<Integer>> resultSet = new HashSet<>();
-        Arrays.sort(nums);
+//     public List<List<Integer>> subsetsWithDup(int[] nums) {
+//         Set<List<Integer>> resultSet = new HashSet<>();
+//         Arrays.sort(nums);
         
-        backtrack(nums, 0, new LinkedList<>(), resultSet);
-        return new LinkedList<>(resultSet);
-    }
+//         backtrack(nums, 0, new LinkedList<>(), resultSet);
+//         return new LinkedList<>(resultSet);
+//     }
     
-    private void backtrack(int[] nums, int idx, List<Integer> tempList, Set<List<Integer>> resultSet) {
-        resultSet.add(new LinkedList<>(tempList));
+//     private void backtrack(int[] nums, int idx, List<Integer> tempList, Set<List<Integer>> resultSet) {
+//         resultSet.add(new LinkedList<>(tempList));
         
-        for(int i=idx ; i<nums.length ; i++) {
-            tempList.add(nums[i]);
-            backtrack(nums, i+1, tempList, resultSet);
-            tempList.remove(tempList.size()-1);
-        }
-    }
+//         for(int i=idx ; i<nums.length ; i++) {
+//             tempList.add(nums[i]);
+//             backtrack(nums, i+1, tempList, resultSet);
+//             tempList.remove(tempList.size()-1);
+//         }
+//     }
     
     
     // 3) Recursive 3: Sorting + By iterating over all the elements starting from idx till end in the method.
-//     public List<List<Integer>> subsetsWithDup(int[] nums) {
-//         List<List<Integer>> result = new LinkedList<>();
-//         Arrays.sort(nums);
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> result = new LinkedList<>();
+        Arrays.sort(nums);
         
-//         backtrack(nums, 0, new LinkedList<>(), result);
-//         return result;
-//     }
+        backtrack(nums, 0, new LinkedList<>(), result);
+        return result;
+    }
     
-//     private void backtrack(int[] nums, int idx, List<Integer> tempList, List<List<Integer>> result) {
-//         result.add(new LinkedList<>(tempList));
+    private void backtrack(int[] nums, int idx, List<Integer> tempList, List<List<Integer>> result) {
+        result.add(new LinkedList<>(tempList));
         
-//         for(int i=idx ; i<nums.length ; i++) {
-//             if(i==idx || nums[i]!=nums[i-1]) {
-//                 tempList.add(nums[i]);
-//                 backtrack(nums, i+1, tempList, result);
-//                 tempList.remove(tempList.size()-1);
-//             }
-//         }
-//     }
+        for(int i=idx ; i<nums.length ; i++) {
+            if(i==idx || nums[i]!=nums[i-1]) {
+                tempList.add(nums[i]);
+                backtrack(nums, i+1, tempList, result);
+                tempList.remove(tempList.size()-1);
+            }
+        }
+    }
 }
