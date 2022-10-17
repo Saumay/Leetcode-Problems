@@ -69,9 +69,8 @@ class Solution {
         Integer[] right = traverse(root.right);
         
         if(left!=null && right!=null) {
-            int sum = root.val + left[0] + right[0];
-
             if((left[2]==null || left[2]<root.val) && (right[1]==null || root.val<right[1])) {
+                int sum = root.val + left[0] + right[0];
                 maxSum = Math.max(sum, maxSum);
                 
                 Integer lower = left[1]!=null ? left[1] : root.val;
