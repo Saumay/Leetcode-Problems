@@ -1,6 +1,8 @@
 class Solution {
     
     // Solution 1: Sliding window
+    // Time Complexity: O(2n)
+    // Space Complexity: O(n)
 //     public int lengthOfLongestSubstring(String s) {
 //         Set<Character> seen = new HashSet<>();
 //         int left = 0;
@@ -18,6 +20,8 @@ class Solution {
 //     }
     
     // Solution 2: Using map to store last occurence of a character
+    // Time Complexity: O(n)
+    // Space Complexity: O(2n)
         public int lengthOfLongestSubstring(String s) {
         Map<Character, Integer> seen = new HashMap<>();
         int left = 0;
