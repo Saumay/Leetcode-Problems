@@ -33,12 +33,10 @@ class Solution {
     
     private boolean checkIPv6(String queryIP) {
         String[] splitted = queryIP.split(":", -1);
-        System.out.println(splitted.length);
         if(splitted.length != 8)
             return false;
         
         for(String str : splitted) {
-            System.out.println(str);
             if(str.isEmpty() || str.length() > 4)
                 return false;
             for(int i=0 ; i<str.length() ; i++) {
@@ -48,7 +46,6 @@ class Solution {
                 else
                     return false;
             }
-            System.out.println(str);
         }
         return true;
     }
